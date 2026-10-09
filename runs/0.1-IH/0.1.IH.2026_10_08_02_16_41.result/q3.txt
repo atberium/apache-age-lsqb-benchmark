@@ -1,0 +1,135 @@
+-- q3.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q3.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Aggregate  (cost=303907.74..303907.75 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Nested Loop  (cost=398.08..303907.74 rows=1 width=0)
+        Inner Unique: true
+        ->  Nested Loop  (cost=397.80..303907.43 rows=1 width=16)
+              Output: _age_default_alias_4.end_id, _age_default_alias_5.start_id
+              Inner Unique: false
+              Join Filter: _ag_enforce_edge_uniqueness3(_age_default_alias_6.id, _age_default_alias_7.id, _age_default_alias_8.id)
+              ->  Nested Loop  (cost=387.62..302626.94 rows=87 width=48)
+                    Output: person1.id, person3.id, _age_default_alias_4.end_id, _age_default_alias_5.start_id, _age_default_alias_6.id, _age_default_alias_7.id
+                    Inner Unique: false
+                    ->  Nested Loop  (cost=376.60..261351.95 rows=222 width=48)
+                          Output: country.id, _age_default_alias_1.end_id, person1.id, person2.id, _age_default_alias_3.end_id, _age_default_alias_6.id
+                          Inner Unique: false
+                          ->  Hash Join  (cost=366.41..662.70 rows=17715 width=40)
+                                Output: country.id, _age_default_alias_1.end_id, person1.id, person2.id, _age_default_alias_3.end_id
+                                Inner Unique: false
+                                Hash Cond: (_age_default_alias_1.end_id = _age_default_alias_3.end_id)
+                                ->  Hash Join  (cost=153.65..211.72 rows=567 width=24)
+                                      Output: country.id, _age_default_alias_1.end_id, person1.id
+                                      Inner Unique: true
+                                      Hash Cond: (_age_default_alias_0.end_id = city1.id)
+                                      ->  Hash Join  (cost=109.43..166.02 rows=567 width=40)
+                                            Output: country.id, _age_default_alias_1.start_id, _age_default_alias_1.end_id, _age_default_alias_0.end_id, person1.id
+                                            Inner Unique: true
+                                            Hash Cond: (_age_default_alias_1.end_id = country.id)
+                                            ->  Hash Join  (cost=104.93..159.98 rows=567 width=32)
+                                                  Output: person1.id, _age_default_alias_0.end_id, _age_default_alias_1.start_id, _age_default_alias_1.end_id
+                                                  Inner Unique: false
+                                                  Hash Cond: (person1.id = _age_default_alias_0.start_id)
+                                                  ->  Seq Scan on lsqb."Person" person1  (cost=0.00..43.00 rows=1700 width=8)
+                                                        Output: person1.id, person1.properties
+                                                  ->  Hash  (cost=97.84..97.84 rows=567 width=32)
+                                                        Output: _age_default_alias_0.start_id, _age_default_alias_0.end_id, _age_default_alias_1.start_id, _age_default_alias_1.end_id
+                                                        ->  Hash Join  (cost=40.22..97.84 rows=567 width=32)
+                                                              Output: _age_default_alias_0.start_id, _age_default_alias_0.end_id, _age_default_alias_1.start_id, _age_default_alias_1.end_id
+                                                              Inner Unique: false
+                                                              Hash Cond: (_age_default_alias_0.end_id = _age_default_alias_1.start_id)
+                                                              Join Filter: _ag_enforce_edge_uniqueness2(_age_default_alias_0.id, _age_default_alias_1.id)
+                                                              ->  Seq Scan on lsqb."IS_LOCATED_IN" _age_default_alias_0  (cost=0.00..30.00 rows=1700 width=24)
+                                                                    Output: _age_default_alias_0.id, _age_default_alias_0.start_id, _age_default_alias_0.end_id, _age_default_alias_0.properties
+                                                              ->  Hash  (cost=23.43..23.43 rows=1343 width=24)
+                                                                    Output: _age_default_alias_1.start_id, _age_default_alias_1.end_id, _age_default_alias_1.id
+                                                                    ->  Seq Scan on lsqb."IS_PART_OF" _age_default_alias_1  (cost=0.00..23.43 rows=1343 width=24)
+                                                                          Output: _age_default_alias_1.start_id, _age_default_alias_1.end_id, _age_default_alias_1.id
+                                            ->  Hash  (cost=3.11..3.11 rows=111 width=8)
+                                                  Output: country.id
+                                                  ->  Seq Scan on lsqb."Country" country  (cost=0.00..3.11 rows=111 width=8)
+                                                        Output: country.id
+                                      ->  Hash  (cost=27.43..27.43 rows=1343 width=8)
+                                            Output: city1.id
+                                            ->  Seq Scan on lsqb."City" city1  (cost=0.00..27.43 rows=1343 width=8)
+                                                  Output: city1.id
+                                ->  Hash  (cost=205.68..205.68 rows=567 width=16)
+                                      Output: person2.id, _age_default_alias_3.end_id
+                                      ->  Hash Join  (cost=149.15..205.68 rows=567 width=16)
+                                            Output: person2.id, _age_default_alias_3.end_id
+                                            Inner Unique: true
+                                            Hash Cond: (_age_default_alias_2.end_id = city2.id)
+                                            ->  Hash Join  (cost=104.93..159.98 rows=567 width=32)
+                                                  Output: person2.id, _age_default_alias_2.end_id, _age_default_alias_3.start_id, _age_default_alias_3.end_id
+                                                  Inner Unique: false
+                                                  Hash Cond: (person2.id = _age_default_alias_2.start_id)
+                                                  ->  Seq Scan on lsqb."Person" person2  (cost=0.00..43.00 rows=1700 width=8)
+                                                        Output: person2.id, person2.properties
+                                                  ->  Hash  (cost=97.84..97.84 rows=567 width=32)
+                                                        Output: _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_3.start_id, _age_default_alias_3.end_id
+                                                        ->  Hash Join  (cost=40.22..97.84 rows=567 width=32)
+                                                              Output: _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_3.start_id, _age_default_alias_3.end_id
+                                                              Inner Unique: false
+                                                              Hash Cond: (_age_default_alias_2.end_id = _age_default_alias_3.start_id)
+                                                              Join Filter: _ag_enforce_edge_uniqueness2(_age_default_alias_2.id, _age_default_alias_3.id)
+                                                              ->  Seq Scan on lsqb."IS_LOCATED_IN" _age_default_alias_2  (cost=0.00..30.00 rows=1700 width=24)
+                                                                    Output: _age_default_alias_2.id, _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.properties
+                                                              ->  Hash  (cost=23.43..23.43 rows=1343 width=24)
+                                                                    Output: _age_default_alias_3.start_id, _age_default_alias_3.end_id, _age_default_alias_3.id
+                                                                    ->  Seq Scan on lsqb."IS_PART_OF" _age_default_alias_3  (cost=0.00..23.43 rows=1343 width=24)
+                                                                          Output: _age_default_alias_3.start_id, _age_default_alias_3.end_id, _age_default_alias_3.id
+                                            ->  Hash  (cost=27.43..27.43 rows=1343 width=8)
+                                                  Output: city2.id
+                                                  ->  Seq Scan on lsqb."City" city2  (cost=0.00..27.43 rows=1343 width=8)
+                                                        Output: city2.id
+                          ->  Bitmap Heap Scan on lsqb."KNOWS" _age_default_alias_6  (cost=10.19..14.71 rows=1 width=24)
+                                Output: _age_default_alias_6.id, _age_default_alias_6.start_id, _age_default_alias_6.end_id, _age_default_alias_6.properties
+                                Recheck Cond: ((_age_default_alias_6.end_id = person2.id) OR (_age_default_alias_6.end_id = person1.id))
+                                Filter: (((_age_default_alias_6.start_id = person1.id) AND (_age_default_alias_6.end_id = person2.id)) OR ((_age_default_alias_6.end_id = person1.id) AND (_age_default_alias_6.start_id = person2.id)))
+                                ->  BitmapOr  (cost=10.19..10.19 rows=26 width=0)
+                                      ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.56 rows=13 width=0)
+                                            Index Cond: (_age_default_alias_6.end_id = person2.id)
+                                      ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.56 rows=13 width=0)
+                                            Index Cond: (_age_default_alias_6.end_id = person1.id)
+                    ->  Nested Loop  (cost=11.02..185.80 rows=12 width=56)
+                          Output: person3.id, _age_default_alias_4.end_id, _age_default_alias_5.start_id, _age_default_alias_5.end_id, _age_default_alias_7.start_id, _age_default_alias_7.end_id, _age_default_alias_7.id
+                          Inner Unique: false
+                          ->  Index Scan using "IS_PART_OF_end_id_idx" on lsqb."IS_PART_OF" _age_default_alias_5  (cost=0.28..0.54 rows=12 width=24)
+                                Output: _age_default_alias_5.id, _age_default_alias_5.start_id, _age_default_alias_5.end_id, _age_default_alias_5.properties
+                                Index Cond: (_age_default_alias_5.end_id = _age_default_alias_1.end_id)
+                          ->  Nested Loop  (cost=10.74..15.43 rows=1 width=48)
+                                Output: person3.id, _age_default_alias_4.end_id, _age_default_alias_4.id, _age_default_alias_7.start_id, _age_default_alias_7.end_id, _age_default_alias_7.id
+                                Inner Unique: false
+                                ->  Index Scan using "IS_LOCATED_IN_end_id_idx" on lsqb."IS_LOCATED_IN" _age_default_alias_4  (cost=0.28..0.38 rows=1 width=24)
+                                      Output: _age_default_alias_4.id, _age_default_alias_4.start_id, _age_default_alias_4.end_id, _age_default_alias_4.properties
+                                      Index Cond: (_age_default_alias_4.end_id = _age_default_alias_5.start_id)
+                                      Filter: _ag_enforce_edge_uniqueness2(_age_default_alias_4.id, _age_default_alias_5.id)
+                                ->  Nested Loop  (cost=10.46..15.04 rows=1 width=32)
+                                      Output: person3.id, _age_default_alias_7.start_id, _age_default_alias_7.end_id, _age_default_alias_7.id
+                                      Inner Unique: false
+                                      ->  Index Only Scan using "Person_pkey" on lsqb."Person" person3  (cost=0.28..0.32 rows=1 width=8)
+                                            Output: person3.id
+                                            Index Cond: (person3.id = _age_default_alias_4.start_id)
+                                      ->  Bitmap Heap Scan on lsqb."KNOWS" _age_default_alias_7  (cost=10.19..14.71 rows=1 width=24)
+                                            Output: _age_default_alias_7.id, _age_default_alias_7.start_id, _age_default_alias_7.end_id, _age_default_alias_7.properties
+                                            Recheck Cond: ((_age_default_alias_7.end_id = person3.id) OR (_age_default_alias_7.end_id = person2.id))
+                                            Filter: (((_age_default_alias_7.start_id = person2.id) AND (_age_default_alias_7.end_id = person3.id)) OR ((_age_default_alias_7.end_id = person2.id) AND (_age_default_alias_7.start_id = person3.id)))
+                                            ->  BitmapOr  (cost=10.19..10.19 rows=26 width=0)
+                                                  ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.56 rows=13 width=0)
+                                                        Index Cond: (_age_default_alias_7.end_id = person3.id)
+                                                  ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.56 rows=13 width=0)
+                                                        Index Cond: (_age_default_alias_7.end_id = person2.id)
+              ->  Bitmap Heap Scan on lsqb."KNOWS" _age_default_alias_8  (cost=10.19..14.71 rows=1 width=24)
+                    Output: _age_default_alias_8.id, _age_default_alias_8.start_id, _age_default_alias_8.end_id, _age_default_alias_8.properties
+                    Recheck Cond: ((_age_default_alias_8.end_id = person1.id) OR (_age_default_alias_8.end_id = person3.id))
+                    Filter: (((_age_default_alias_8.start_id = person3.id) AND (_age_default_alias_8.end_id = person1.id)) OR ((_age_default_alias_8.end_id = person3.id) AND (_age_default_alias_8.start_id = person1.id)))
+                    ->  BitmapOr  (cost=10.19..10.19 rows=26 width=0)
+                          ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.56 rows=13 width=0)
+                                Index Cond: (_age_default_alias_8.end_id = person1.id)
+                          ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.56 rows=13 width=0)
+                                Index Cond: (_age_default_alias_8.end_id = person3.id)
+        ->  Index Only Scan using "City_pkey" on lsqb."City" city3  (cost=0.28..0.31 rows=1 width=8)
+              Output: city3.id
+              Index Cond: (city3.id = _age_default_alias_4.end_id)
+Settings: search_path = 'ag_catalog,$user,public'

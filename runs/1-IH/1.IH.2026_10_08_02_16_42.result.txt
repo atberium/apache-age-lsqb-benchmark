@@ -1,0 +1,43 @@
+psql:with-inheritance/graph.sql:3: NOTICE:  graph "lsqb" has been created
+psql:with-inheritance/graph.sql:5: NOTICE:  VLabel "Company" has been created
+psql:with-inheritance/graph.sql:6: NOTICE:  VLabel "University" has been created
+psql:with-inheritance/graph.sql:7: NOTICE:  VLabel "Continent" has been created
+psql:with-inheritance/graph.sql:8: NOTICE:  VLabel "Post" has been created
+psql:with-inheritance/graph.sql:9: NOTICE:  VLabel "Comment" has been created
+psql:with-inheritance/graph.sql:10: NOTICE:  VLabel "Message" has been created
+psql:with-inheritance/graph.sql:11: NOTICE:  VLabel "Country" has been created
+psql:with-inheritance/graph.sql:12: NOTICE:  VLabel "City" has been created
+psql:with-inheritance/graph.sql:13: NOTICE:  VLabel "Tag" has been created
+psql:with-inheritance/graph.sql:14: NOTICE:  VLabel "TagClass" has been created
+psql:with-inheritance/graph.sql:15: NOTICE:  VLabel "Forum" has been created
+psql:with-inheritance/graph.sql:16: NOTICE:  VLabel "Person" has been created
+psql:with-inheritance/graph.sql:21: NOTICE:  ELabel "HAS_MEMBER" has been created
+psql:with-inheritance/graph.sql:22: NOTICE:  ELabel "HAS_INTEREST" has been created
+psql:with-inheritance/graph.sql:23: NOTICE:  ELabel "LIKES" has been created
+psql:with-inheritance/graph.sql:24: NOTICE:  ELabel "KNOWS" has been created
+psql:with-inheritance/graph.sql:25: NOTICE:  ELabel "REPLY_OF" has been created
+psql:with-inheritance/graph.sql:26: NOTICE:  ELabel "HAS_TAG" has been created
+psql:with-inheritance/graph.sql:27: NOTICE:  ELabel "IS_PART_OF" has been created
+psql:with-inheritance/graph.sql:28: NOTICE:  ELabel "HAS_TYPE" has been created
+psql:with-inheritance/graph.sql:29: NOTICE:  ELabel "HAS_CREATOR" has been created
+psql:with-inheritance/graph.sql:30: NOTICE:  ELabel "IS_LOCATED_IN" has been created
+psql:with-inheritance/graph.sql:31: NOTICE:  ELabel "CONTAINER_OF" has been created
+Time load data,75.207
+Before  pg_size_pretty 
+----------------
+ 8454 kB
+(1 row)
+After  pg_size_pretty 
+----------------
+ 2679 MB
+(1 row)
+2026-10-08 02:31:20.236,q1.sql,[('221636419',)],160.092700,159.645008,375760,[160.248023;159.502603;160.092700;160.294169;158.087547]
+2026-10-08 02:33:42.099,q2.sql,[('1085627',)],28.243372,28.364115,164356,[28.963926;28.348577;28.083125;28.243372;28.181577]
+2026-10-08 03:23:42.140,q3.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 03:23:58.247,q4.sql,[('14836038',)],3.221896,3.211954,209096,[3.199985;3.245360;3.244645;3.221896;3.147883]
+2026-10-08 03:24:15.533,q5.sql,[('13824510',)],3.450199,3.450495,150076,[3.454610;3.450199;3.449443;3.446611;3.451612]
+2026-10-08 04:14:15.566,q6.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 04:14:34.595,q7.sql,[('26190133',)],3.788333,3.800002,222964,[3.773213;3.867139;3.780894;3.790430;3.788333]
+2026-10-08 05:04:34.756,q8.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 05:54:34.791,q9.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+failure_rate,44.444%

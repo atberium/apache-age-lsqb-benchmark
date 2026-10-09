@@ -1,0 +1,61 @@
+-- q2.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q2.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Aggregate  (cost=4204.41..4204.42 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Nested Loop  (cost=53.04..4204.41 rows=1 width=0)
+        Inner Unique: false
+        ->  Nested Loop  (cost=42.86..4189.69 rows=1 width=16)
+              Output: person1.id, person2.id
+              Inner Unique: true
+              ->  Nested Loop  (cost=42.58..4189.40 rows=1 width=16)
+                    Output: person1.id, _age_default_alias_3.end_id
+                    Inner Unique: false
+                    Join Filter: _ag_enforce_edge_uniqueness3(_age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_3.id)
+                    ->  Nested Loop  (cost=42.16..4188.86 rows=1 width=40)
+                          Output: person1.id, _age_default_alias_1.id, _age_default_alias_2.end_id, _age_default_alias_2.id, post.id
+                          Inner Unique: true
+                          ->  Nested Loop  (cost=41.88..4188.57 rows=1 width=40)
+                                Output: _age_default_alias_1.end_id, _age_default_alias_1.id, _age_default_alias_2.end_id, _age_default_alias_2.id, post.id
+                                Inner Unique: false
+                                Join Filter: (_age_default_alias_1.start_id = comment.id)
+                                ->  Nested Loop  (cost=41.46..4188.03 rows=1 width=40)
+                                      Output: comment.id, _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.id, post.id
+                                      Inner Unique: true
+                                      ->  Nested Loop  (cost=41.04..4064.16 rows=216 width=32)
+                                            Output: comment.id, _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                            Inner Unique: false
+                                            ->  Bitmap Heap Scan on lsqb."Message" comment  (cost=40.62..1250.53 rows=388 width=8)
+                                                  Output: comment.id, comment.properties
+                                                  Recheck Cond: (comment.properties @> '{"type": "Comment"}'::agtype)
+                                                  ->  Bitmap Index Scan on "Message_properties_idx"  (cost=0.00..40.52 rows=388 width=0)
+                                                        Index Cond: (comment.properties @> '{"type": "Comment"}'::agtype)
+                                            ->  Index Scan using "REPLY_OF_start_id_idx" on lsqb."REPLY_OF" _age_default_alias_2  (cost=0.42..7.24 rows=1 width=24)
+                                                  Output: _age_default_alias_2.id, _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.properties
+                                                  Index Cond: (_age_default_alias_2.start_id = comment.id)
+                                      ->  Index Scan using "Message_pkey" on lsqb."Message" post  (cost=0.42..0.57 rows=1 width=8)
+                                            Output: post.id, post.properties
+                                            Index Cond: (post.id = _age_default_alias_2.end_id)
+                                            Filter: (post.properties @> '{"type": "Post"}'::agtype)
+                                ->  Index Scan using "HAS_CREATOR_start_id_idx" on lsqb."HAS_CREATOR" _age_default_alias_1  (cost=0.42..0.52 rows=1 width=24)
+                                      Output: _age_default_alias_1.id, _age_default_alias_1.start_id, _age_default_alias_1.end_id, _age_default_alias_1.properties
+                                      Index Cond: (_age_default_alias_1.start_id = _age_default_alias_2.start_id)
+                          ->  Index Only Scan using "Person_pkey" on lsqb."Person" person1  (cost=0.28..0.30 rows=1 width=8)
+                                Output: person1.id
+                                Index Cond: (person1.id = _age_default_alias_1.end_id)
+                    ->  Index Scan using "HAS_CREATOR_start_id_idx" on lsqb."HAS_CREATOR" _age_default_alias_3  (cost=0.42..0.52 rows=1 width=24)
+                          Output: _age_default_alias_3.id, _age_default_alias_3.start_id, _age_default_alias_3.end_id, _age_default_alias_3.properties
+                          Index Cond: (_age_default_alias_3.start_id = _age_default_alias_2.end_id)
+              ->  Index Only Scan using "Person_pkey" on lsqb."Person" person2  (cost=0.28..0.30 rows=1 width=8)
+                    Output: person2.id
+                    Index Cond: (person2.id = _age_default_alias_3.end_id)
+        ->  Bitmap Heap Scan on lsqb."KNOWS" _age_default_alias_0  (cost=10.19..14.71 rows=1 width=16)
+              Output: _age_default_alias_0.id, _age_default_alias_0.start_id, _age_default_alias_0.end_id, _age_default_alias_0.properties
+              Recheck Cond: ((_age_default_alias_0.end_id = person2.id) OR (_age_default_alias_0.end_id = person1.id))
+              Filter: (((_age_default_alias_0.start_id = person1.id) AND (_age_default_alias_0.end_id = person2.id)) OR ((_age_default_alias_0.end_id = person1.id) AND (_age_default_alias_0.start_id = person2.id)))
+              ->  BitmapOr  (cost=10.19..10.19 rows=26 width=0)
+                    ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.56 rows=13 width=0)
+                          Index Cond: (_age_default_alias_0.end_id = person2.id)
+                    ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.56 rows=13 width=0)
+                          Index Cond: (_age_default_alias_0.end_id = person1.id)
+Settings: search_path = 'ag_catalog,$user,public'

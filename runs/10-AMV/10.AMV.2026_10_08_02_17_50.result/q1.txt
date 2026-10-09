@@ -1,0 +1,133 @@
+-- q1.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q1.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Finalize Aggregate  (cost=1015314096.64..1015314096.66 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Gather  (cost=1015314096.43..1015314096.64 rows=2 width=8)
+        Output: (PARTIAL count(*))
+        Workers Planned: 2
+        Single Copy: false
+        ->  Partial Aggregate  (cost=1015313096.43..1015313096.44 rows=1 width=8)
+              Output: PARTIAL count(*)
+              ->  Hash Join  (cost=349105212.65..995191891.13 rows=8048482119 width=0)
+                    Inner Unique: true
+                    Hash Cond: (_age_default_alias_13.end_id = _age_default_alias_14.id)
+                    ->  Hash Join  (cost=349105210.05..972803505.18 rows=8048482119 width=8)
+                          Output: _age_default_alias_13.end_id
+                          Inner Unique: false
+                          Hash Cond: (_age_default_alias_11.end_id = _age_default_alias_13.start_id)
+                          Join Filter: _ag_enforce_edge_uniqueness(_age_default_alias_1.id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.id, _age_default_alias_9.id, _age_default_alias_11.id, _age_default_alias_13.id)
+                          ->  Hash Join  (cost=349104729.25..580439481.83 rows=24145448772 width=64)
+                                Output: _age_default_alias_12.id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.id, _age_default_alias_1.id, _age_default_alias_9.id, _age_default_alias_11.end_id, _age_default_alias_11.id
+                                Inner Unique: true
+                                Hash Cond: (_age_default_alias_11.end_id = _age_default_alias_12.id)
+                                ->  Parallel Hash Join  (cost=349104194.45..517040438.89 rows=24145448772 width=56)
+                                      Output: _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.id, _age_default_alias_1.id, _age_default_alias_9.id, _age_default_alias_11.end_id, _age_default_alias_11.id
+                                      Inner Unique: false
+                                      Hash Cond: (_age_default_alias_11.start_id = _age_default_alias_9.start_id)
+                                      ->  Parallel Seq Scan on lsqb."HAS_TAG" _age_default_alias_11  (cost=0.00..925043.47 rows=33454747 width=24)
+                                            Output: _age_default_alias_11.start_id, _age_default_alias_11.end_id, _age_default_alias_11.id
+                                      ->  Parallel Hash  (cost=227484139.04..227484139.04 rows=5462234033 width=56)
+                                            Output: _age_default_alias_10.id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.id, _age_default_alias_1.id, _age_default_alias_9.start_id, _age_default_alias_9.id
+                                            ->  Parallel Hash Join  (cost=82159939.97..227484139.04 rows=5462234033 width=56)
+                                                  Output: _age_default_alias_10.id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.id, _age_default_alias_1.id, _age_default_alias_9.start_id, _age_default_alias_9.id
+                                                  Inner Unique: true
+                                                  Hash Cond: (_age_default_alias_9.start_id = _age_default_alias_10.id)
+                                                  ->  Parallel Hash Join  (cost=81561014.89..116489265.25 rows=5462234033 width=48)
+                                                        Output: _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.id, _age_default_alias_1.id, _age_default_alias_9.start_id, _age_default_alias_9.id
+                                                        Inner Unique: false
+                                                        Hash Cond: (_age_default_alias_9.end_id = _age_default_alias_7.end_id)
+                                                        ->  Parallel Seq Scan on lsqb."REPLY_OF" _age_default_alias_9  (cost=0.00..591104.43 rows=21377643 width=24)
+                                                              Output: _age_default_alias_9.end_id, _age_default_alias_9.start_id, _age_default_alias_9.id
+                                                        ->  Parallel Hash  (cost=61114224.17..61114224.17 rows=960436378 width=48)
+                                                              Output: _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.end_id, _age_default_alias_7.id, _age_default_alias_1.id, _age_default_alias_8.id
+                                                              ->  Hash Join  (cost=4900335.98..61114224.17 rows=960436378 width=48)
+                                                                    Output: _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.end_id, _age_default_alias_7.id, _age_default_alias_1.id, _age_default_alias_8.id
+                                                                    Inner Unique: true
+                                                                    Hash Cond: (_age_default_alias_1.start_id = _age_default_alias_2.id)
+                                                                    ->  Hash Join  (cost=4900291.76..58585078.49 rows=960436378 width=64)
+                                                                          Output: _age_default_alias_3.end_id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.end_id, _age_default_alias_7.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_8.id
+                                                                          Inner Unique: true
+                                                                          Hash Cond: (_age_default_alias_1.end_id = _age_default_alias_0.id)
+                                                                          ->  Parallel Hash Join  (cost=4900287.26..55967668.55 rows=960436378 width=72)
+                                                                                Output: _age_default_alias_3.end_id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.end_id, _age_default_alias_7.id, _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_8.id
+                                                                                Inner Unique: true
+                                                                                Hash Cond: (_age_default_alias_7.end_id = _age_default_alias_8.id)
+                                                                                ->  Hash Join  (cost=4689771.82..32583583.00 rows=960575971 width=64)
+                                                                                      Output: _age_default_alias_3.end_id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.end_id, _age_default_alias_7.id, _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                                                                      Inner Unique: false
+                                                                                      Hash Cond: (_age_default_alias_3.end_id = _age_default_alias_1.start_id)
+                                                                                      ->  Merge Join  (cost=4689731.60..19375623.18 rows=960575971 width=40)
+                                                                                            Output: _age_default_alias_3.end_id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.end_id, _age_default_alias_7.id
+                                                                                            Inner Unique: false
+                                                                                            Merge Cond: (_age_default_alias_5.start_id = _age_default_alias_7.start_id)
+                                                                                            ->  Merge Join  (cost=3119669.34..3340690.91 rows=14495303 width=40)
+                                                                                                  Output: _age_default_alias_3.end_id, _age_default_alias_3.id, _age_default_alias_5.start_id, _age_default_alias_5.id, _age_default_alias_6.id
+                                                                                                  Inner Unique: true
+                                                                                                  Merge Cond: (_age_default_alias_5.start_id = _age_default_alias_6.id)
+                                                                                                  ->  Sort  (cost=3022832.86..3059071.11 rows=14495303 width=32)
+                                                                                                        Output: _age_default_alias_3.end_id, _age_default_alias_3.id, _age_default_alias_5.start_id, _age_default_alias_5.id
+                                                                                                        Sort Key: _age_default_alias_5.start_id
+                                                                                                        ->  Hash Join  (cost=4988.64..605060.09 rows=14495303 width=32)
+                                                                                                              Output: _age_default_alias_3.end_id, _age_default_alias_3.id, _age_default_alias_5.start_id, _age_default_alias_5.id
+                                                                                                              Inner Unique: false
+                                                                                                              Hash Cond: (_age_default_alias_5.end_id = _age_default_alias_3.start_id)
+                                                                                                              ->  Parallel Seq Scan on lsqb."HAS_MEMBER" _age_default_alias_5  (cost=0.00..400761.03 rows=14495303 width=24)
+                                                                                                                    Output: _age_default_alias_5.id, _age_default_alias_5.start_id, _age_default_alias_5.end_id, _age_default_alias_5.properties
+                                                                                                              ->  Hash  (cost=4076.14..4076.14 rows=73000 width=32)
+                                                                                                                    Output: _age_default_alias_4.id, _age_default_alias_3.end_id, _age_default_alias_3.start_id, _age_default_alias_3.id
+                                                                                                                    ->  Hash Join  (cost=2578.50..4076.14 rows=73000 width=32)
+                                                                                                                          Output: _age_default_alias_4.id, _age_default_alias_3.end_id, _age_default_alias_3.start_id, _age_default_alias_3.id
+                                                                                                                          Inner Unique: true
+                                                                                                                          Hash Cond: (_age_default_alias_3.start_id = _age_default_alias_4.id)
+                                                                                                                          ->  Seq Scan on lsqb."IS_LOCATED_IN" _age_default_alias_3  (cost=0.00..1306.00 rows=73000 width=24)
+                                                                                                                                Output: _age_default_alias_3.id, _age_default_alias_3.start_id, _age_default_alias_3.end_id, _age_default_alias_3.properties
+                                                                                                                          ->  Hash  (cost=1666.00..1666.00 rows=73000 width=8)
+                                                                                                                                Output: _age_default_alias_4.id
+                                                                                                                                ->  Seq Scan on lsqb."Person" _age_default_alias_4  (cost=0.00..1666.00 rows=73000 width=8)
+                                                                                                                                      Output: _age_default_alias_4.id
+                                                                                                  ->  Sort  (cost=96818.35..98632.50 rows=725661 width=8)
+                                                                                                        Output: _age_default_alias_6.id
+                                                                                                        Sort Key: _age_default_alias_6.id
+                                                                                                        ->  Seq Scan on lsqb."Forum" _age_default_alias_6  (cost=0.00..16256.61 rows=725661 width=8)
+                                                                                                              Output: _age_default_alias_6.id
+                                                                                            ->  Materialize  (cost=1568783.01..1613889.54 rows=9021305 width=24)
+                                                                                                  Output: _age_default_alias_7.start_id, _age_default_alias_7.end_id, _age_default_alias_7.id
+                                                                                                  ->  Sort  (cost=1568783.01..1591336.27 rows=9021305 width=24)
+                                                                                                        Output: _age_default_alias_7.start_id, _age_default_alias_7.end_id, _age_default_alias_7.id
+                                                                                                        Sort Key: _age_default_alias_7.start_id
+                                                                                                        ->  Seq Scan on lsqb."CONTAINER_OF" _age_default_alias_7  (cost=0.00..156581.05 rows=9021305 width=24)
+                                                                                                              Output: _age_default_alias_7.start_id, _age_default_alias_7.end_id, _age_default_alias_7.id
+                                                                                      ->  Hash  (cost=23.43..23.43 rows=1343 width=24)
+                                                                                            Output: _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                                                                            ->  Seq Scan on lsqb."IS_PART_OF" _age_default_alias_1  (cost=0.00..23.43 rows=1343 width=24)
+                                                                                                  Output: _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                                                                ->  Parallel Hash  (cost=148855.31..148855.31 rows=3758331 width=8)
+                                                                                      Output: _age_default_alias_8.id
+                                                                                      ->  Parallel Seq Scan on lsqb."Post" _age_default_alias_8  (cost=0.00..148855.31 rows=3758331 width=8)
+                                                                                            Output: _age_default_alias_8.id
+                                                                          ->  Hash  (cost=3.11..3.11 rows=111 width=8)
+                                                                                Output: _age_default_alias_0.id
+                                                                                ->  Seq Scan on lsqb."Country" _age_default_alias_0  (cost=0.00..3.11 rows=111 width=8)
+                                                                                      Output: _age_default_alias_0.id
+                                                                    ->  Hash  (cost=27.43..27.43 rows=1343 width=8)
+                                                                          Output: _age_default_alias_2.id
+                                                                          ->  Seq Scan on lsqb."City" _age_default_alias_2  (cost=0.00..27.43 rows=1343 width=8)
+                                                                                Output: _age_default_alias_2.id
+                                                  ->  Parallel Hash  (cost=423585.37..423585.37 rows=10687337 width=8)
+                                                        Output: _age_default_alias_10.id
+                                                        ->  Parallel Seq Scan on lsqb."Comment" _age_default_alias_10  (cost=0.00..423585.37 rows=10687337 width=8)
+                                                              Output: _age_default_alias_10.id
+                                ->  Hash  (cost=333.80..333.80 rows=16080 width=8)
+                                      Output: _age_default_alias_12.id
+                                      ->  Seq Scan on lsqb."Tag" _age_default_alias_12  (cost=0.00..333.80 rows=16080 width=8)
+                                            Output: _age_default_alias_12.id
+                          ->  Hash  (cost=279.80..279.80 rows=16080 width=24)
+                                Output: _age_default_alias_13.start_id, _age_default_alias_13.end_id, _age_default_alias_13.id
+                                ->  Seq Scan on lsqb."HAS_TYPE" _age_default_alias_13  (cost=0.00..279.80 rows=16080 width=24)
+                                      Output: _age_default_alias_13.start_id, _age_default_alias_13.end_id, _age_default_alias_13.id
+                    ->  Hash  (cost=1.71..1.71 rows=71 width=8)
+                          Output: _age_default_alias_14.id
+                          ->  Seq Scan on lsqb."TagClass" _age_default_alias_14  (cost=0.00..1.71 rows=71 width=8)
+                                Output: _age_default_alias_14.id
+Settings: search_path = 'ag_catalog,$user,public'

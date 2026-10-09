@@ -1,0 +1,41 @@
+psql:with-type-property/graph.sql:3: NOTICE:  graph "lsqb" has been created
+psql:with-type-property/graph.sql:5: NOTICE:  VLabel "Company" has been created
+psql:with-type-property/graph.sql:6: NOTICE:  VLabel "University" has been created
+psql:with-type-property/graph.sql:7: NOTICE:  VLabel "Continent" has been created
+psql:with-type-property/graph.sql:8: NOTICE:  VLabel "Message" has been created
+psql:with-type-property/graph.sql:9: NOTICE:  VLabel "Country" has been created
+psql:with-type-property/graph.sql:10: NOTICE:  VLabel "City" has been created
+psql:with-type-property/graph.sql:11: NOTICE:  VLabel "Tag" has been created
+psql:with-type-property/graph.sql:12: NOTICE:  VLabel "TagClass" has been created
+psql:with-type-property/graph.sql:13: NOTICE:  VLabel "Forum" has been created
+psql:with-type-property/graph.sql:14: NOTICE:  VLabel "Person" has been created
+psql:with-type-property/graph.sql:16: NOTICE:  ELabel "HAS_MEMBER" has been created
+psql:with-type-property/graph.sql:17: NOTICE:  ELabel "HAS_INTEREST" has been created
+psql:with-type-property/graph.sql:18: NOTICE:  ELabel "LIKES" has been created
+psql:with-type-property/graph.sql:19: NOTICE:  ELabel "KNOWS" has been created
+psql:with-type-property/graph.sql:20: NOTICE:  ELabel "REPLY_OF" has been created
+psql:with-type-property/graph.sql:21: NOTICE:  ELabel "HAS_TAG" has been created
+psql:with-type-property/graph.sql:22: NOTICE:  ELabel "IS_PART_OF" has been created
+psql:with-type-property/graph.sql:23: NOTICE:  ELabel "HAS_TYPE" has been created
+psql:with-type-property/graph.sql:24: NOTICE:  ELabel "HAS_CREATOR" has been created
+psql:with-type-property/graph.sql:25: NOTICE:  ELabel "IS_LOCATED_IN" has been created
+psql:with-type-property/graph.sql:26: NOTICE:  ELabel "CONTAINER_OF" has been created
+Time load data,7.392
+Before  pg_size_pretty 
+----------------
+ 8454 kB
+(1 row)
+After  pg_size_pretty 
+----------------
+ 322 MB
+(1 row)
+2026-10-09 00:09:52.227,q1.sql,[('8773828',)],41.224642,41.478390,147784,[40.082459;45.668554;41.689843;41.224642;38.726453]
+2026-10-09 00:10:04.384,q2.sql,[('82990',)],2.409273,2.425060,131624,[2.488329;2.414376;2.408759;2.404561;2.409273]
+2026-10-09 00:11:42.295,q3.sql,[('30456',)],19.555401,19.576069,16928,[19.555401;19.534518;19.683271;19.566373;19.540782]
+2026-10-09 00:11:51.050,q4.sql,[('784511',)],1.732679,1.744313,139808,[1.773837;1.752447;1.732679;1.730420;1.732181]
+2026-10-09 00:11:59.794,q5.sql,[('1079722',)],1.739270,1.743221,134688,[1.745100;1.761299;1.734135;1.739270;1.736302]
+2026-10-09 01:01:59.823,q6.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-09 01:02:03.081,q7.sql,[('1628132',)],0.643788,0.646787,172912,[0.662265;0.640990;0.643908;0.642983;0.643788]
+2026-10-09 01:02:46.977,q8.sql,[('537142',)],8.759455,8.773527,132576,[8.827877;8.759455;8.761847;8.759302;8.759157]
+2026-10-09 01:52:47.006,q9.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+failure_rate,22.222%

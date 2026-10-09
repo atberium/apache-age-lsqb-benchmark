@@ -1,0 +1,43 @@
+psql:with-additional-message-vlabel/graph.sql:3: NOTICE:  graph "lsqb" has been created
+psql:with-additional-message-vlabel/graph.sql:5: NOTICE:  VLabel "Company" has been created
+psql:with-additional-message-vlabel/graph.sql:6: NOTICE:  VLabel "University" has been created
+psql:with-additional-message-vlabel/graph.sql:7: NOTICE:  VLabel "Continent" has been created
+psql:with-additional-message-vlabel/graph.sql:8: NOTICE:  VLabel "Message" has been created
+psql:with-additional-message-vlabel/graph.sql:9: NOTICE:  VLabel "Comment" has been created
+psql:with-additional-message-vlabel/graph.sql:10: NOTICE:  VLabel "Post" has been created
+psql:with-additional-message-vlabel/graph.sql:11: NOTICE:  VLabel "Country" has been created
+psql:with-additional-message-vlabel/graph.sql:12: NOTICE:  VLabel "City" has been created
+psql:with-additional-message-vlabel/graph.sql:13: NOTICE:  VLabel "Tag" has been created
+psql:with-additional-message-vlabel/graph.sql:14: NOTICE:  VLabel "TagClass" has been created
+psql:with-additional-message-vlabel/graph.sql:15: NOTICE:  VLabel "Forum" has been created
+psql:with-additional-message-vlabel/graph.sql:16: NOTICE:  VLabel "Person" has been created
+psql:with-additional-message-vlabel/graph.sql:18: NOTICE:  ELabel "HAS_MEMBER" has been created
+psql:with-additional-message-vlabel/graph.sql:19: NOTICE:  ELabel "HAS_INTEREST" has been created
+psql:with-additional-message-vlabel/graph.sql:20: NOTICE:  ELabel "LIKES" has been created
+psql:with-additional-message-vlabel/graph.sql:21: NOTICE:  ELabel "KNOWS" has been created
+psql:with-additional-message-vlabel/graph.sql:22: NOTICE:  ELabel "REPLY_OF" has been created
+psql:with-additional-message-vlabel/graph.sql:23: NOTICE:  ELabel "HAS_TAG" has been created
+psql:with-additional-message-vlabel/graph.sql:24: NOTICE:  ELabel "IS_PART_OF" has been created
+psql:with-additional-message-vlabel/graph.sql:25: NOTICE:  ELabel "HAS_TYPE" has been created
+psql:with-additional-message-vlabel/graph.sql:26: NOTICE:  ELabel "HAS_CREATOR" has been created
+psql:with-additional-message-vlabel/graph.sql:27: NOTICE:  ELabel "IS_LOCATED_IN" has been created
+psql:with-additional-message-vlabel/graph.sql:28: NOTICE:  ELabel "CONTAINER_OF" has been created
+Time load data,131.699
+Before  pg_size_pretty 
+----------------
+ 8454 kB
+(1 row)
+After  pg_size_pretty 
+----------------
+ 4648 MB
+(1 row)
+2026-10-08 04:50:14.947,q1.sql,[('221636419',)],131.409274,131.503570,244964,[132.115801;131.574631;131.290268;131.127878;131.409274]
+2026-10-08 04:59:23.032,q2.sql,[('1085627',)],109.643162,109.598096,160904,[109.777448;109.277952;109.458289;109.643162;109.833630]
+2026-10-08 05:49:23.074,q3.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 05:49:48.138,q4.sql,[('14836038',)],4.991486,5.003518,221952,[4.993717;4.988905;4.991486;5.068740;4.974742]
+2026-10-08 05:50:09.027,q5.sql,[('13824510',)],4.142464,4.170924,163900,[4.160500;4.142464;4.116821;4.101161;4.333675]
+2026-10-08 06:40:09.064,q6.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 06:40:37.208,q7.sql,[('26190133',)],5.298278,5.614460,209984,[5.342190;6.951288;5.298278;5.205710;5.274833]
+2026-10-08 06:43:15.197,q8.sql,[('6907213',)],31.571653,31.588471,164628,[31.460026;31.543383;31.571653;31.701798;31.665496]
+2026-10-08 07:33:15.233,q9.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+failure_rate,33.333%

@@ -1,0 +1,5 @@
+SELECT * from cypher('lsqb', $$
+MATCH (tag1:Tag)<-[:HAS_TAG]-(message:Message)<-[:REPLY_OF]-(comment:Comment)-[:HAS_TAG]->(tag2:Tag)
+WHERE id(tag1) <> id(tag2)
+RETURN count(*) AS c
+$$) AS (c agtype)

@@ -1,0 +1,43 @@
+psql:with-inheritance/graph.sql:3: NOTICE:  graph "lsqb" has been created
+psql:with-inheritance/graph.sql:5: NOTICE:  VLabel "Company" has been created
+psql:with-inheritance/graph.sql:6: NOTICE:  VLabel "University" has been created
+psql:with-inheritance/graph.sql:7: NOTICE:  VLabel "Continent" has been created
+psql:with-inheritance/graph.sql:8: NOTICE:  VLabel "Post" has been created
+psql:with-inheritance/graph.sql:9: NOTICE:  VLabel "Comment" has been created
+psql:with-inheritance/graph.sql:10: NOTICE:  VLabel "Message" has been created
+psql:with-inheritance/graph.sql:11: NOTICE:  VLabel "Country" has been created
+psql:with-inheritance/graph.sql:12: NOTICE:  VLabel "City" has been created
+psql:with-inheritance/graph.sql:13: NOTICE:  VLabel "Tag" has been created
+psql:with-inheritance/graph.sql:14: NOTICE:  VLabel "TagClass" has been created
+psql:with-inheritance/graph.sql:15: NOTICE:  VLabel "Forum" has been created
+psql:with-inheritance/graph.sql:16: NOTICE:  VLabel "Person" has been created
+psql:with-inheritance/graph.sql:21: NOTICE:  ELabel "HAS_MEMBER" has been created
+psql:with-inheritance/graph.sql:22: NOTICE:  ELabel "HAS_INTEREST" has been created
+psql:with-inheritance/graph.sql:23: NOTICE:  ELabel "LIKES" has been created
+psql:with-inheritance/graph.sql:24: NOTICE:  ELabel "KNOWS" has been created
+psql:with-inheritance/graph.sql:25: NOTICE:  ELabel "REPLY_OF" has been created
+psql:with-inheritance/graph.sql:26: NOTICE:  ELabel "HAS_TAG" has been created
+psql:with-inheritance/graph.sql:27: NOTICE:  ELabel "IS_PART_OF" has been created
+psql:with-inheritance/graph.sql:28: NOTICE:  ELabel "HAS_TYPE" has been created
+psql:with-inheritance/graph.sql:29: NOTICE:  ELabel "HAS_CREATOR" has been created
+psql:with-inheritance/graph.sql:30: NOTICE:  ELabel "IS_LOCATED_IN" has been created
+psql:with-inheritance/graph.sql:31: NOTICE:  ELabel "CONTAINER_OF" has been created
+Time load data,213.845
+Before  pg_size_pretty 
+----------------
+ 8454 kB
+(1 row)
+After  pg_size_pretty 
+----------------
+ 8040 MB
+(1 row)
+2026-10-08 02:48:25.993,q1.sql,[('817102702',)],301.222911,335.949086,467076,[477.604884;299.663334;301.245665;300.008639;301.222911]
+2026-10-08 03:00:55.733,q2.sql,[('3340333',)],149.835451,149.939173,163212,[150.998425;149.378617;150.664749;149.835451;148.818625]
+2026-10-08 03:50:55.806,q3.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 03:51:44.761,q4.sql,[('50077955',)],9.724898,9.780805,204572,[9.724898;9.847962;9.688060;9.700705;9.942401]
+2026-10-08 03:52:28.179,q5.sql,[('41626686',)],8.670002,8.676056,143032,[8.817000;8.735210;8.514924;8.643143;8.670002]
+2026-10-08 04:42:28.246,q6.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 04:43:25.609,q7.sql,[('85201127',)],11.441817,11.466161,211884,[11.441817;11.385314;11.499072;11.426386;11.578215]
+2026-10-08 05:33:26.411,q8.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 06:23:26.472,q9.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+failure_rate,44.444%

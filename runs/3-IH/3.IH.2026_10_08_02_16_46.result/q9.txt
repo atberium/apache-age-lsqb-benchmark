@@ -1,0 +1,83 @@
+-- q9.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q9.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Aggregate  (cost=10052897660892.98..10052897660892.99 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Merge Join  (cost=1704.31..10052896717528.93 rows=377345620 width=0)
+        Inner Unique: false
+        Merge Cond: (_age_default_alias_2.start_id = person3.id)
+        Join Filter: _ag_enforce_edge_uniqueness3(_age_default_alias_0.id, _age_default_alias_1.id, _age_default_alias_2.id)
+        ->  Nested Loop  (cost=0.72..54645.30 rows=634081 width=16)
+              Output: _age_default_alias_2.start_id, _age_default_alias_2.id
+              Inner Unique: true
+              ->  Index Scan using "HAS_INTEREST_start_id_idx" on lsqb."HAS_INTEREST" _age_default_alias_2  (cost=0.42..37542.74 rows=634081 width=24)
+                    Output: _age_default_alias_2.id, _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.properties
+              ->  Memoize  (cost=0.30..0.31 rows=1 width=8)
+                    Output: tag.id
+                    Cache Key: _age_default_alias_2.end_id
+                    Cache Mode: logical
+                    Estimates: capacity=4131 distinct keys=4131 lookups=634081 hit percent=99.35%
+                    ->  Index Only Scan using "Tag_pkey" on lsqb."Tag" tag  (cost=0.29..0.30 rows=1 width=8)
+                          Output: tag.id
+                          Index Cond: (tag.id = _age_default_alias_2.end_id)
+        ->  Materialize  (cost=1703.59..10052876971160.42 rows=48203618 width=24)
+              Output: _age_default_alias_0.id, _age_default_alias_1.id, person3.id
+              ->  Nested Loop  (cost=1703.59..10052876850651.38 rows=48203618 width=24)
+                    Output: _age_default_alias_0.id, _age_default_alias_1.id, person3.id
+                    Inner Unique: false
+                    ->  Nested Loop  (cost=1351.94..1059005884146.65 rows=25149641738 width=32)
+                          Output: person1.id, person2.id, _age_default_alias_1.id, person3.id
+                          Inner Unique: false
+                          Join Filter: ((person1.id <> person3.id) AND (NOT (EXISTS(SubPlan exists_1))::agtype))
+                          ->  Gather Merge  (cost=1351.94..153358936330.15 rows=1397254 width=24)
+                                Output: person2.id, _age_default_alias_1.id, person3.id
+                                Workers Planned: 1
+                                ->  Nested Loop  (cost=351.93..153358778139.06 rows=821914 width=24)
+                                      Output: person2.id, _age_default_alias_1.id, person3.id
+                                      Inner Unique: false
+                                      ->  Nested Loop  (cost=0.29..5361521.61 rows=428823529 width=16)
+                                            Output: person2.id, person3.id
+                                            Inner Unique: false
+                                            ->  Parallel Index Only Scan using "Person_pkey" on lsqb."Person" person3  (cost=0.29..678.11 rows=15882 width=8)
+                                                  Output: person3.id
+                                            ->  Materialize  (cost=0.00..736.00 rows=27000 width=8)
+                                                  Output: person2.id
+                                                  ->  Seq Scan on lsqb."Person" person2  (cost=0.00..601.00 rows=27000 width=8)
+                                                        Output: person2.id
+                                      ->  Bitmap Heap Scan on lsqb."KNOWS" _age_default_alias_1  (cost=351.64..357.60 rows=1 width=24)
+                                            Output: _age_default_alias_1.id, _age_default_alias_1.start_id, _age_default_alias_1.end_id, _age_default_alias_1.properties
+                                            Recheck Cond: ((_age_default_alias_1.end_id = person3.id) OR (_age_default_alias_1.end_id = person2.id))
+                                            Filter: (((_age_default_alias_1.start_id = person2.id) AND (_age_default_alias_1.end_id = person3.id)) OR ((_age_default_alias_1.end_id = person2.id) AND (_age_default_alias_1.start_id = person3.id)))
+                                            ->  BitmapOr  (cost=351.64..351.64 rows=98 width=0)
+                                                  ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..1.17 rows=49 width=0)
+                                                        Index Cond: (_age_default_alias_1.end_id = person3.id)
+                                                  ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..1.17 rows=49 width=0)
+                                                        Index Cond: (_age_default_alias_1.end_id = person2.id)
+                          ->  Materialize  (cost=0.00..736.00 rows=27000 width=8)
+                                Output: person1.id
+                                ->  Seq Scan on lsqb."Person" person1  (cost=0.00..601.00 rows=27000 width=8)
+                                      Output: person1.id
+                          SubPlan exists_1
+                            ->  Bitmap Heap Scan on lsqb."KNOWS" _age_default_alias_3  (cost=19.97..23.99 rows=1 width=0)
+                                  Recheck Cond: (((_age_default_alias_3.end_id = person3.id) AND (_age_default_alias_3.start_id = person1.id)) OR ((_age_default_alias_3.end_id = person1.id) AND (_age_default_alias_3.start_id = person3.id)))
+                                  ->  BitmapOr  (cost=19.97..19.97 rows=1 width=0)
+                                        ->  BitmapAnd  (cost=9.86..9.86 rows=1 width=0)
+                                              ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..4.79 rows=49 width=0)
+                                                    Index Cond: (_age_default_alias_3.end_id = person3.id)
+                                              ->  Bitmap Index Scan on "KNOWS_start_id_idx"  (cost=0.00..4.81 rows=52 width=0)
+                                                    Index Cond: (_age_default_alias_3.start_id = person1.id)
+                                        ->  BitmapAnd  (cost=9.86..9.86 rows=1 width=0)
+                                              ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..4.79 rows=49 width=0)
+                                                    Index Cond: (_age_default_alias_3.end_id = person1.id)
+                                              ->  Bitmap Index Scan on "KNOWS_start_id_idx"  (cost=0.00..4.81 rows=52 width=0)
+                                                    Index Cond: (_age_default_alias_3.start_id = person3.id)
+                    ->  Bitmap Heap Scan on lsqb."KNOWS" _age_default_alias_0  (cost=351.64..357.60 rows=1 width=24)
+                          Output: _age_default_alias_0.id, _age_default_alias_0.start_id, _age_default_alias_0.end_id, _age_default_alias_0.properties
+                          Recheck Cond: ((_age_default_alias_0.end_id = person2.id) OR (_age_default_alias_0.end_id = person1.id))
+                          Filter: (((_age_default_alias_0.start_id = person1.id) AND (_age_default_alias_0.end_id = person2.id)) OR ((_age_default_alias_0.end_id = person1.id) AND (_age_default_alias_0.start_id = person2.id)))
+                          ->  BitmapOr  (cost=351.64..351.64 rows=98 width=0)
+                                ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..1.17 rows=49 width=0)
+                                      Index Cond: (_age_default_alias_0.end_id = person2.id)
+                                ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..1.17 rows=49 width=0)
+                                      Index Cond: (_age_default_alias_0.end_id = person1.id)
+Settings: search_path = 'ag_catalog,$user,public'

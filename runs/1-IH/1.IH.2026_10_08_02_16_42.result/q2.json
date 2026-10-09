@@ -1,0 +1,527 @@
+{
+ "query": "q2.sql",
+ "executed": false,
+ "error": null,
+ "plan": [
+  {
+   "Plan": {
+    "Node Type": "Aggregate",
+    "Strategy": "Plain",
+    "Partial Mode": "Finalize",
+    "Parallel Aware": false,
+    "Async Capable": false,
+    "Startup Cost": 15266066.64,
+    "Total Cost": 15266066.66,
+    "Plan Rows": 1,
+    "Plan Width": 32,
+    "Disabled": false,
+    "Output": [
+     "(count(*))::agtype"
+    ],
+    "Plans": [
+     {
+      "Node Type": "Gather",
+      "Parent Relationship": "Outer",
+      "Parallel Aware": false,
+      "Async Capable": false,
+      "Startup Cost": 15266066.43,
+      "Total Cost": 15266066.64,
+      "Plan Rows": 2,
+      "Plan Width": 8,
+      "Disabled": false,
+      "Output": [
+       "(PARTIAL count(*))"
+      ],
+      "Workers Planned": 2,
+      "Single Copy": false,
+      "Plans": [
+       {
+        "Node Type": "Aggregate",
+        "Strategy": "Plain",
+        "Partial Mode": "Partial",
+        "Parent Relationship": "Outer",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Startup Cost": 15265066.43,
+        "Total Cost": 15265066.44,
+        "Plan Rows": 1,
+        "Plan Width": 8,
+        "Disabled": false,
+        "Output": [
+         "PARTIAL count(*)"
+        ],
+        "Plans": [
+         {
+          "Node Type": "Merge Join",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Join Type": "Inner",
+          "Startup Cost": 666750.73,
+          "Total Cost": 15265064.16,
+          "Plan Rows": 908,
+          "Plan Width": 0,
+          "Disabled": false,
+          "Inner Unique": true,
+          "Merge Cond": "(_age_default_alias_2.end_id = post.id)",
+          "Plans": [
+           {
+            "Node Type": "Nested Loop",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Join Type": "Inner",
+            "Startup Cost": 666525.12,
+            "Total Cost": 30097634.04,
+            "Plan Rows": 908,
+            "Plan Width": 16,
+            "Disabled": false,
+            "Output": [
+             "_age_default_alias_2.end_id",
+             "_age_default_alias_3.start_id"
+            ],
+            "Inner Unique": false,
+            "Plans": [
+             {
+              "Node Type": "Nested Loop",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Join Type": "Inner",
+              "Startup Cost": 666410.04,
+              "Total Cost": 881197.86,
+              "Plan Rows": 242733,
+              "Plan Width": 32,
+              "Disabled": false,
+              "Output": [
+               "person1.id",
+               "person2.id",
+               "_age_default_alias_2.end_id",
+               "_age_default_alias_3.start_id"
+              ],
+              "Inner Unique": true,
+              "Plans": [
+               {
+                "Node Type": "Nested Loop",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Join Type": "Inner",
+                "Startup Cost": 666409.75,
+                "Total Cost": 872446.06,
+                "Plan Rows": 242733,
+                "Plan Width": 32,
+                "Disabled": false,
+                "Output": [
+                 "person1.id",
+                 "_age_default_alias_2.end_id",
+                 "_age_default_alias_3.start_id",
+                 "_age_default_alias_3.end_id"
+                ],
+                "Inner Unique": true,
+                "Plans": [
+                 {
+                  "Node Type": "Merge Join",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Join Type": "Inner",
+                  "Startup Cost": 666409.45,
+                  "Total Cost": 863694.25,
+                  "Plan Rows": 242733,
+                  "Plan Width": 32,
+                  "Disabled": false,
+                  "Output": [
+                   "_age_default_alias_1.end_id",
+                   "_age_default_alias_2.end_id",
+                   "_age_default_alias_3.start_id",
+                   "_age_default_alias_3.end_id"
+                  ],
+                  "Inner Unique": false,
+                  "Merge Cond": "(_age_default_alias_3.start_id = _age_default_alias_2.end_id)",
+                  "Join Filter": "_ag_enforce_edge_uniqueness3(_age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_3.id)",
+                  "Plans": [
+                   {
+                    "Node Type": "Index Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": true,
+                    "Async Capable": false,
+                    "Scan Direction": "Forward",
+                    "Index Name": "HAS_CREATOR_start_id_idx",
+                    "Relation Name": "HAS_CREATOR",
+                    "Schema": "lsqb",
+                    "Alias": "_age_default_alias_3",
+                    "Startup Cost": 0.43,
+                    "Total Cost": 171986.48,
+                    "Plan Rows": 1587336,
+                    "Plan Width": 24,
+                    "Disabled": false,
+                    "Output": [
+                     "_age_default_alias_3.id",
+                     "_age_default_alias_3.start_id",
+                     "_age_default_alias_3.end_id",
+                     "_age_default_alias_3.properties"
+                    ]
+                   },
+                   {
+                    "Node Type": "Materialize",
+                    "Parent Relationship": "Inner",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Startup Cost": 665529.33,
+                    "Total Cost": 674267.73,
+                    "Plan Rows": 1747681,
+                    "Plan Width": 32,
+                    "Disabled": false,
+                    "Output": [
+                     "_age_default_alias_1.end_id",
+                     "_age_default_alias_1.id",
+                     "_age_default_alias_2.end_id",
+                     "_age_default_alias_2.id"
+                    ],
+                    "Plans": [
+                     {
+                      "Node Type": "Sort",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Startup Cost": 665529.33,
+                      "Total Cost": 669898.53,
+                      "Plan Rows": 1747681,
+                      "Plan Width": 32,
+                      "Disabled": false,
+                      "Output": [
+                       "_age_default_alias_1.end_id",
+                       "_age_default_alias_1.id",
+                       "_age_default_alias_2.end_id",
+                       "_age_default_alias_2.id"
+                      ],
+                      "Sort Key": [
+                       "_age_default_alias_2.end_id"
+                      ],
+                      "Plans": [
+                       {
+                        "Node Type": "Hash Join",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Join Type": "Inner",
+                        "Startup Cost": 192217.77,
+                        "Total Cost": 400684.93,
+                        "Plan Rows": 1747681,
+                        "Plan Width": 32,
+                        "Disabled": false,
+                        "Output": [
+                         "_age_default_alias_1.end_id",
+                         "_age_default_alias_1.id",
+                         "_age_default_alias_2.end_id",
+                         "_age_default_alias_2.id"
+                        ],
+                        "Inner Unique": false,
+                        "Hash Cond": "(_age_default_alias_1.start_id = _age_default_alias_2.start_id)",
+                        "Plans": [
+                         {
+                          "Node Type": "Hash Join",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Join Type": "Inner",
+                          "Startup Cost": 99984.3,
+                          "Total Cost": 230900.6,
+                          "Plan Rows": 2580280,
+                          "Plan Width": 32,
+                          "Disabled": false,
+                          "Output": [
+                           "_age_default_alias_1.end_id",
+                           "_age_default_alias_1.start_id",
+                           "_age_default_alias_1.id",
+                           "comment.id"
+                          ],
+                          "Inner Unique": true,
+                          "Hash Cond": "(_age_default_alias_1.start_id = comment.id)",
+                          "Plans": [
+                           {
+                            "Node Type": "Seq Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Relation Name": "HAS_CREATOR",
+                            "Schema": "lsqb",
+                            "Alias": "_age_default_alias_1",
+                            "Startup Cost": 0.0,
+                            "Total Cost": 66192.07,
+                            "Plan Rows": 3809607,
+                            "Plan Width": 24,
+                            "Disabled": false,
+                            "Output": [
+                             "_age_default_alias_1.end_id",
+                             "_age_default_alias_1.start_id",
+                             "_age_default_alias_1.id"
+                            ]
+                           },
+                           {
+                            "Node Type": "Hash",
+                            "Parent Relationship": "Inner",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Startup Cost": 57650.8,
+                            "Total Cost": 57650.8,
+                            "Plan Rows": 2580280,
+                            "Plan Width": 8,
+                            "Disabled": false,
+                            "Output": [
+                             "comment.id"
+                            ],
+                            "Plans": [
+                             {
+                              "Node Type": "Seq Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Relation Name": "Comment",
+                              "Schema": "lsqb",
+                              "Alias": "comment",
+                              "Startup Cost": 0.0,
+                              "Total Cost": 57650.8,
+                              "Plan Rows": 2580280,
+                              "Plan Width": 8,
+                              "Disabled": false,
+                              "Output": [
+                               "comment.id"
+                              ]
+                             }
+                            ]
+                           }
+                          ]
+                         },
+                         {
+                          "Node Type": "Hash",
+                          "Parent Relationship": "Inner",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Startup Cost": 44859.32,
+                          "Total Cost": 44859.32,
+                          "Plan Rows": 2580332,
+                          "Plan Width": 24,
+                          "Disabled": false,
+                          "Output": [
+                           "_age_default_alias_2.start_id",
+                           "_age_default_alias_2.end_id",
+                           "_age_default_alias_2.id"
+                          ],
+                          "Plans": [
+                           {
+                            "Node Type": "Seq Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Relation Name": "REPLY_OF",
+                            "Schema": "lsqb",
+                            "Alias": "_age_default_alias_2",
+                            "Startup Cost": 0.0,
+                            "Total Cost": 44859.32,
+                            "Plan Rows": 2580332,
+                            "Plan Width": 24,
+                            "Disabled": false,
+                            "Output": [
+                             "_age_default_alias_2.start_id",
+                             "_age_default_alias_2.end_id",
+                             "_age_default_alias_2.id"
+                            ]
+                           }
+                          ]
+                         }
+                        ]
+                       }
+                      ]
+                     }
+                    ]
+                   }
+                  ]
+                 },
+                 {
+                  "Node Type": "Memoize",
+                  "Parent Relationship": "Inner",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 0.3,
+                  "Total Cost": 0.31,
+                  "Plan Rows": 1,
+                  "Plan Width": 8,
+                  "Disabled": false,
+                  "Output": [
+                   "person1.id"
+                  ],
+                  "Cache Key": "_age_default_alias_1.end_id",
+                  "Cache Mode": "logical",
+                  "Estimated Capacity": 8870,
+                  "Estimated Distinct Lookup Keys": 8870,
+                  "Estimated Lookups": 242733,
+                  "Estimated Hit Percent": 96.35,
+                  "Plans": [
+                   {
+                    "Node Type": "Index Only Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Scan Direction": "Forward",
+                    "Index Name": "Person_pkey",
+                    "Relation Name": "Person",
+                    "Schema": "lsqb",
+                    "Alias": "person1",
+                    "Startup Cost": 0.29,
+                    "Total Cost": 0.3,
+                    "Plan Rows": 1,
+                    "Plan Width": 8,
+                    "Disabled": false,
+                    "Output": [
+                     "person1.id"
+                    ],
+                    "Index Cond": "(person1.id = _age_default_alias_1.end_id)"
+                   }
+                  ]
+                 }
+                ]
+               },
+               {
+                "Node Type": "Memoize",
+                "Parent Relationship": "Inner",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 0.3,
+                "Total Cost": 0.31,
+                "Plan Rows": 1,
+                "Plan Width": 8,
+                "Disabled": false,
+                "Output": [
+                 "person2.id"
+                ],
+                "Cache Key": "_age_default_alias_3.end_id",
+                "Cache Mode": "logical",
+                "Estimated Capacity": 8870,
+                "Estimated Distinct Lookup Keys": 8870,
+                "Estimated Lookups": 242733,
+                "Estimated Hit Percent": 96.35,
+                "Plans": [
+                 {
+                  "Node Type": "Index Only Scan",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Scan Direction": "Forward",
+                  "Index Name": "Person_pkey",
+                  "Relation Name": "Person",
+                  "Schema": "lsqb",
+                  "Alias": "person2",
+                  "Startup Cost": 0.29,
+                  "Total Cost": 0.3,
+                  "Plan Rows": 1,
+                  "Plan Width": 8,
+                  "Disabled": false,
+                  "Output": [
+                   "person2.id"
+                  ],
+                  "Index Cond": "(person2.id = _age_default_alias_3.end_id)"
+                 }
+                ]
+               }
+              ]
+             },
+             {
+              "Node Type": "Bitmap Heap Scan",
+              "Parent Relationship": "Inner",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Relation Name": "KNOWS",
+              "Schema": "lsqb",
+              "Alias": "_age_default_alias_0",
+              "Startup Cost": 115.07,
+              "Total Cost": 120.35,
+              "Plan Rows": 1,
+              "Plan Width": 16,
+              "Disabled": false,
+              "Output": [
+               "_age_default_alias_0.id",
+               "_age_default_alias_0.start_id",
+               "_age_default_alias_0.end_id",
+               "_age_default_alias_0.properties"
+              ],
+              "Recheck Cond": "((_age_default_alias_0.end_id = person2.id) OR (_age_default_alias_0.end_id = person1.id))",
+              "Filter": "(((_age_default_alias_0.start_id = person1.id) AND (_age_default_alias_0.end_id = person2.id)) OR ((_age_default_alias_0.end_id = person1.id) AND (_age_default_alias_0.start_id = person2.id)))",
+              "Plans": [
+               {
+                "Node Type": "BitmapOr",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Startup Cost": 115.07,
+                "Total Cost": 115.07,
+                "Plan Rows": 64,
+                "Plan Width": 0,
+                "Disabled": false,
+                "Plans": [
+                 {
+                  "Node Type": "Bitmap Index Scan",
+                  "Parent Relationship": "Member",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Index Name": "KNOWS_end_id_idx",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 0.96,
+                  "Plan Rows": 32,
+                  "Plan Width": 0,
+                  "Disabled": false,
+                  "Index Cond": "(_age_default_alias_0.end_id = person2.id)"
+                 },
+                 {
+                  "Node Type": "Bitmap Index Scan",
+                  "Parent Relationship": "Member",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Index Name": "KNOWS_end_id_idx",
+                  "Startup Cost": 0.0,
+                  "Total Cost": 0.96,
+                  "Plan Rows": 32,
+                  "Plan Width": 0,
+                  "Disabled": false,
+                  "Index Cond": "(_age_default_alias_0.end_id = person1.id)"
+                 }
+                ]
+               }
+              ]
+             }
+            ]
+           },
+           {
+            "Node Type": "Index Only Scan",
+            "Parent Relationship": "Inner",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Scan Direction": "Forward",
+            "Index Name": "Post_pkey",
+            "Relation Name": "Post",
+            "Schema": "lsqb",
+            "Alias": "post",
+            "Startup Cost": 0.43,
+            "Total Cost": 41966.77,
+            "Plan Rows": 1229275,
+            "Plan Width": 8,
+            "Disabled": false,
+            "Output": [
+             "post.id"
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "Settings": {
+    "search_path": "ag_catalog,$user,public"
+   }
+  }
+ ]
+}

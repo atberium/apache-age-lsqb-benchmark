@@ -1,0 +1,69 @@
+-- q8.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q8.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Aggregate  (cost=1361282.67..1361282.68 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Hash Join  (cost=779793.43..1360423.07 rows=343839 width=0)
+        Inner Unique: true
+        Hash Cond: (_age_default_alias_0.end_id = tag1.id)
+        Join Filter: ((tag1.id <> tag2.id) AND (NOT (EXISTS(SubPlan exists_1))::agtype))
+        ->  Gather  (cost=779232.63..1356203.59 rows=515791 width=24)
+              Output: _age_default_alias_0.end_id, comment.id, tag2.id
+              Workers Planned: 2
+              Single Copy: false
+              ->  Parallel Hash Join  (cost=778232.63..1303624.49 rows=214913 width=24)
+                    Output: _age_default_alias_0.end_id, comment.id, tag2.id
+                    Inner Unique: false
+                    Hash Cond: (_age_default_alias_0.start_id = message.id)
+                    Join Filter: _ag_enforce_edge_uniqueness3(_age_default_alias_0.id, _age_default_alias_1.id, _age_default_alias_2.id)
+                    ->  Parallel Seq Scan on lsqb."HAS_TAG" _age_default_alias_0  (cost=0.00..462560.72 rows=16728072 width=24)
+                          Output: _age_default_alias_0.id, _age_default_alias_0.start_id, _age_default_alias_0.end_id, _age_default_alias_0.properties
+                    ->  Parallel Hash  (cost=778023.53..778023.53 rows=16728 width=48)
+                          Output: message.id, _age_default_alias_1.end_id, _age_default_alias_1.id, comment.id, _age_default_alias_2.id, tag2.id
+                          ->  Hash Join  (cost=109084.90..778023.53 rows=16728 width=48)
+                                Output: message.id, _age_default_alias_1.end_id, _age_default_alias_1.id, comment.id, _age_default_alias_2.id, tag2.id
+                                Inner Unique: true
+                                Hash Cond: (_age_default_alias_2.end_id = tag2.id)
+                                ->  Nested Loop  (cost=108524.10..777418.81 rows=16728 width=48)
+                                      Output: message.id, _age_default_alias_1.end_id, _age_default_alias_1.id, comment.id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                      Inner Unique: true
+                                      ->  Nested Loop  (cost=108523.53..718987.59 rows=16728 width=40)
+                                            Output: _age_default_alias_1.end_id, _age_default_alias_1.id, comment.id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                            Inner Unique: false
+                                            Join Filter: (_age_default_alias_1.start_id = comment.id)
+                                            ->  Parallel Hash Join  (cost=108523.09..614995.00 rows=16728 width=32)
+                                                  Output: comment.id, _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                                  Inner Unique: true
+                                                  Hash Cond: (_age_default_alias_2.start_id = comment.id)
+                                                  ->  Parallel Seq Scan on lsqb."HAS_TAG" _age_default_alias_2  (cost=0.00..462560.72 rows=16728072 width=24)
+                                                        Output: _age_default_alias_2.id, _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.properties
+                                                  ->  Parallel Hash  (cost=108342.51..108342.51 rows=14447 width=8)
+                                                        Output: comment.id
+                                                        ->  Parallel Bitmap Heap Scan on lsqb."Message" comment  (cost=295.68..108342.51 rows=14447 width=8)
+                                                              Output: comment.id
+                                                              Recheck Cond: (comment.properties @> '{"type": "Comment"}'::agtype)
+                                                              ->  Bitmap Index Scan on "Message_properties_idx"  (cost=0.00..287.02 rows=34673 width=0)
+                                                                    Index Cond: (comment.properties @> '{"type": "Comment"}'::agtype)
+                                            ->  Index Scan using "REPLY_OF_start_id_idx" on lsqb."REPLY_OF" _age_default_alias_1  (cost=0.44..6.20 rows=1 width=24)
+                                                  Output: _age_default_alias_1.id, _age_default_alias_1.start_id, _age_default_alias_1.end_id, _age_default_alias_1.properties
+                                                  Index Cond: (_age_default_alias_1.start_id = _age_default_alias_2.start_id)
+                                      ->  Index Only Scan using "Message_pkey" on lsqb."Message" message  (cost=0.56..3.49 rows=1 width=8)
+                                            Output: message.id
+                                            Index Cond: (message.id = _age_default_alias_1.end_id)
+                                ->  Hash  (cost=359.80..359.80 rows=16080 width=8)
+                                      Output: tag2.id
+                                      ->  Seq Scan on lsqb."Tag" tag2  (cost=0.00..359.80 rows=16080 width=8)
+                                            Output: tag2.id
+        ->  Hash  (cost=359.80..359.80 rows=16080 width=8)
+              Output: tag1.id
+              ->  Seq Scan on lsqb."Tag" tag1  (cost=0.00..359.80 rows=16080 width=8)
+                    Output: tag1.id
+        SubPlan exists_1
+          ->  Bitmap Heap Scan on lsqb."HAS_TAG" _age_default_alias_3  (cost=105.72..109.73 rows=1 width=0)
+                Recheck Cond: ((_age_default_alias_3.start_id = comment.id) AND (_age_default_alias_3.end_id = tag1.id))
+                ->  BitmapAnd  (cost=105.72..105.72 rows=1 width=0)
+                      ->  Bitmap Index Scan on "HAS_TAG_start_id_idx"  (cost=0.00..4.90 rows=44 width=0)
+                            Index Cond: (_age_default_alias_3.start_id = comment.id)
+                      ->  Bitmap Index Scan on "HAS_TAG_end_id_idx"  (cost=0.00..100.57 rows=5334 width=0)
+                            Index Cond: (_age_default_alias_3.end_id = tag1.id)
+Settings: search_path = 'ag_catalog,$user,public'

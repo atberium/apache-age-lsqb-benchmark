@@ -1,0 +1,81 @@
+-- q2.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q2.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Finalize Aggregate  (cost=1248985.52..1248985.53 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Gather  (cost=1248985.30..1248985.51 rows=2 width=8)
+        Output: (PARTIAL count(*))
+        Workers Planned: 2
+        Single Copy: false
+        ->  Partial Aggregate  (cost=1247985.30..1247985.31 rows=1 width=8)
+              Output: PARTIAL count(*)
+              ->  Merge Join  (cost=162374.45..1247984.16 rows=457 width=0)
+                    Inner Unique: true
+                    Merge Cond: (_age_default_alias_2.end_id = post.id)
+                    ->  Nested Loop  (cost=162298.13..2326974.67 rows=457 width=16)
+                          Output: _age_default_alias_2.end_id, _age_default_alias_3.start_id
+                          Inner Unique: false
+                          ->  Nested Loop  (cost=162268.31..221978.38 rows=60858 width=32)
+                                Output: person1.id, person2.id, _age_default_alias_2.end_id, _age_default_alias_3.start_id
+                                Inner Unique: true
+                                ->  Nested Loop  (cost=162268.02..219398.73 rows=60858 width=32)
+                                      Output: person1.id, _age_default_alias_2.end_id, _age_default_alias_3.start_id, _age_default_alias_3.end_id
+                                      Inner Unique: true
+                                      ->  Merge Join  (cost=162267.73..216819.08 rows=60858 width=32)
+                                            Output: _age_default_alias_1.end_id, _age_default_alias_2.end_id, _age_default_alias_3.start_id, _age_default_alias_3.end_id
+                                            Inner Unique: false
+                                            Merge Cond: (_age_default_alias_3.start_id = _age_default_alias_2.end_id)
+                                            Join Filter: _ag_enforce_edge_uniqueness3(_age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_3.id)
+                                            ->  Parallel Index Scan using "HAS_CREATOR_start_id_idx" on lsqb."HAS_CREATOR" _age_default_alias_3  (cost=0.43..48071.76 rows=463059 width=24)
+                                                  Output: _age_default_alias_3.id, _age_default_alias_3.start_id, _age_default_alias_3.end_id, _age_default_alias_3.properties
+                                            ->  Materialize  (cost=162021.19..164212.07 rows=438176 width=32)
+                                                  Output: _age_default_alias_1.end_id, _age_default_alias_1.id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                                  ->  Sort  (cost=162021.19..163116.63 rows=438176 width=32)
+                                                        Output: _age_default_alias_1.end_id, _age_default_alias_1.id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                                        Sort Key: _age_default_alias_2.end_id
+                                                        ->  Hash Join  (cost=51817.26..110475.58 rows=438176 width=32)
+                                                              Output: _age_default_alias_1.end_id, _age_default_alias_1.id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                                              Inner Unique: false
+                                                              Hash Cond: (_age_default_alias_1.start_id = _age_default_alias_2.start_id)
+                                                              ->  Hash Join  (cost=26843.13..64871.83 rows=697828 width=32)
+                                                                    Output: _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id, comment.id
+                                                                    Inner Unique: true
+                                                                    Hash Cond: (_age_default_alias_1.start_id = comment.id)
+                                                                    ->  Seq Scan on lsqb."HAS_CREATOR" _age_default_alias_1  (cost=0.00..19361.42 rows=1111342 width=24)
+                                                                          Output: _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                                                    ->  Hash  (cost=15394.28..15394.28 rows=697828 width=8)
+                                                                          Output: comment.id
+                                                                          ->  Seq Scan on lsqb."Comment" comment  (cost=0.00..15394.28 rows=697828 width=8)
+                                                                                Output: comment.id
+                                                              ->  Hash  (cost=12162.28..12162.28 rows=697828 width=24)
+                                                                    Output: _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                                                    ->  Seq Scan on lsqb."REPLY_OF" _age_default_alias_2  (cost=0.00..12162.28 rows=697828 width=24)
+                                                                          Output: _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                      ->  Memoize  (cost=0.29..0.31 rows=1 width=8)
+                                            Output: person1.id
+                                            Cache Key: _age_default_alias_1.end_id
+                                            Cache Mode: logical
+                                            Estimates: capacity=3556 distinct keys=3556 lookups=60858 hit percent=94.16%
+                                            ->  Index Only Scan using "Person_pkey" on lsqb."Person" person1  (cost=0.28..0.30 rows=1 width=8)
+                                                  Output: person1.id
+                                                  Index Cond: (person1.id = _age_default_alias_1.end_id)
+                                ->  Memoize  (cost=0.29..0.31 rows=1 width=8)
+                                      Output: person2.id
+                                      Cache Key: _age_default_alias_3.end_id
+                                      Cache Mode: logical
+                                      Estimates: capacity=3556 distinct keys=3556 lookups=60858 hit percent=94.16%
+                                      ->  Index Only Scan using "Person_pkey" on lsqb."Person" person2  (cost=0.28..0.30 rows=1 width=8)
+                                            Output: person2.id
+                                            Index Cond: (person2.id = _age_default_alias_3.end_id)
+                          ->  Bitmap Heap Scan on lsqb."KNOWS" _age_default_alias_0  (cost=29.82..34.58 rows=1 width=16)
+                                Output: _age_default_alias_0.id, _age_default_alias_0.start_id, _age_default_alias_0.end_id, _age_default_alias_0.properties
+                                Recheck Cond: ((_age_default_alias_0.end_id = person2.id) OR (_age_default_alias_0.end_id = person1.id))
+                                Filter: (((_age_default_alias_0.start_id = person1.id) AND (_age_default_alias_0.end_id = person2.id)) OR ((_age_default_alias_0.end_id = person1.id) AND (_age_default_alias_0.start_id = person2.id)))
+                                ->  BitmapOr  (cost=29.82..29.82 rows=38 width=0)
+                                      ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.64 rows=19 width=0)
+                                            Index Cond: (_age_default_alias_0.end_id = person2.id)
+                                      ->  Bitmap Index Scan on "KNOWS_end_id_idx"  (cost=0.00..0.64 rows=19 width=0)
+                                            Index Cond: (_age_default_alias_0.end_id = person1.id)
+                    ->  Index Only Scan using "Post_pkey" on lsqb."Post" post  (cost=0.42..14150.61 rows=413514 width=8)
+                          Output: post.id
+Settings: search_path = 'ag_catalog,$user,public'

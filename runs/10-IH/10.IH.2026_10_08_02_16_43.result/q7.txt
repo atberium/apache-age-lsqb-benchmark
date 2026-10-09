@@ -1,0 +1,83 @@
+-- q7.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q7.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Finalize Aggregate  (cost=4630787.46..4630787.47 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Gather  (cost=4630787.24..4630787.45 rows=2 width=8)
+        Output: (PARTIAL count(*))
+        Workers Planned: 2
+        Single Copy: false
+        ->  Partial Aggregate  (cost=4629787.24..4629787.25 rows=1 width=8)
+              Output: PARTIAL count(*)
+              ->  Parallel Hash Right Join  (cost=3983586.10..4615849.51 rows=5575094 width=0)
+                    Inner Unique: false
+                    Hash Cond: (_age_default_alias_4.end_id = message.id)
+                    ->  Parallel Hash Join  (cost=598952.53..1068678.13 rows=10687493 width=8)
+                          Output: _age_default_alias_4.end_id
+                          Inner Unique: true
+                          Hash Cond: (_age_default_alias_4.start_id = comment.id)
+                          ->  Parallel Seq Scan on lsqb."REPLY_OF" _age_default_alias_4  (cost=0.00..295546.93 rows=10687493 width=16)
+                                Output: _age_default_alias_4.start_id, _age_default_alias_4.end_id
+                          ->  Parallel Hash  (cost=423595.79..423595.79 rows=10688379 width=8)
+                                Output: comment.id
+                                ->  Parallel Seq Scan on lsqb."Comment" comment  (cost=0.00..423595.79 rows=10688379 width=8)
+                                      Output: comment.id
+                    ->  Parallel Hash  (cost=3293166.89..3293166.89 rows=5575094 width=8)
+                          Output: message.id
+                          ->  Parallel Hash Right Join  (cost=2717446.34..3293166.89 rows=5575094 width=8)
+                                Output: message.id
+                                Inner Unique: false
+                                Hash Cond: (_age_default_alias_3.end_id = message.id)
+                                ->  Hash Join  (cost=2578.50..388618.58 rows=12748525 width=8)
+                                      Output: _age_default_alias_3.end_id
+                                      Inner Unique: true
+                                      Hash Cond: (_age_default_alias_3.start_id = liker.id)
+                                      ->  Parallel Seq Scan on lsqb."LIKES" _age_default_alias_3  (cost=0.00..352573.25 rows=12748525 width=16)
+                                            Output: _age_default_alias_3.id, _age_default_alias_3.start_id, _age_default_alias_3.end_id, _age_default_alias_3.properties
+                                      ->  Hash  (cost=1666.00..1666.00 rows=73000 width=8)
+                                            Output: liker.id
+                                            ->  Seq Scan on lsqb."Person" liker  (cost=0.00..1666.00 rows=73000 width=8)
+                                                  Output: liker.id
+                                ->  Parallel Hash  (cost=2623401.16..2623401.16 rows=5575094 width=8)
+                                      Output: message.id
+                                      ->  Parallel Hash Join  (cost=1549499.60..2623401.16 rows=5575094 width=8)
+                                            Output: message.id
+                                            Inner Unique: false
+                                            Hash Cond: (_age_default_alias_1.start_id = message.id)
+                                            ->  Hash Join  (cost=667765.84..1586648.24 rows=5575094 width=16)
+                                                  Output: _age_default_alias_1.start_id, _age_default_alias_2.start_id
+                                                  Inner Unique: true
+                                                  Hash Cond: (_age_default_alias_2.end_id = creator.id)
+                                                  ->  Parallel Hash Join  (cost=665187.34..1569434.27 rows=5575094 width=24)
+                                                        Output: _age_default_alias_1.start_id, _age_default_alias_2.start_id, _age_default_alias_2.end_id
+                                                        Inner Unique: false
+                                                        Hash Cond: (_age_default_alias_1.start_id = _age_default_alias_2.start_id)
+                                                        Join Filter: _ag_enforce_edge_uniqueness2(_age_default_alias_1.id, _age_default_alias_2.id)
+                                                        ->  Hash Join  (cost=534.80..506983.07 rows=16725283 width=16)
+                                                              Output: _age_default_alias_1.start_id, _age_default_alias_1.id
+                                                              Inner Unique: true
+                                                              Hash Cond: (_age_default_alias_1.end_id = _age_default_alias_0.id)
+                                                              ->  Parallel Seq Scan on lsqb."HAS_TAG" _age_default_alias_1  (cost=0.00..462532.83 rows=16725283 width=24)
+                                                                    Output: _age_default_alias_1.id, _age_default_alias_1.start_id, _age_default_alias_1.end_id, _age_default_alias_1.properties
+                                                              ->  Hash  (cost=333.80..333.80 rows=16080 width=8)
+                                                                    Output: _age_default_alias_0.id
+                                                                    ->  Seq Scan on lsqb."Tag" _age_default_alias_0  (cost=0.00..333.80 rows=16080 width=8)
+                                                                          Output: _age_default_alias_0.id
+                                                        ->  Parallel Hash  (cost=399466.02..399466.02 rows=14444202 width=24)
+                                                              Output: _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                                              ->  Parallel Seq Scan on lsqb."HAS_CREATOR" _age_default_alias_2  (cost=0.00..399466.02 rows=14444202 width=24)
+                                                                    Output: _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.id
+                                                  ->  Hash  (cost=1666.00..1666.00 rows=73000 width=8)
+                                                        Output: creator.id
+                                                        ->  Seq Scan on lsqb."Person" creator  (cost=0.00..1666.00 rows=73000 width=8)
+                                                              Output: creator.id
+                                            ->  Parallel Hash  (cost=644700.05..644700.05 rows=14447737 width=8)
+                                                  Output: message.id
+                                                  ->  Parallel Append  (cost=0.00..644700.05 rows=14447737 width=8)
+                                                        ->  Parallel Seq Scan on lsqb."Comment" message_3  (cost=0.00..423595.79 rows=10688379 width=8)
+                                                              Output: message_3.id
+                                                        ->  Parallel Seq Scan on lsqb."Post" message_2  (cost=0.00..148865.57 rows=3759357 width=8)
+                                                              Output: message_2.id
+                                                        ->  Parallel Seq Scan on lsqb."Message" message_1  (cost=0.00..0.00 rows=1 width=8)
+                                                              Output: message_1.id
+Settings: search_path = 'ag_catalog,$user,public'

@@ -1,0 +1,43 @@
+psql:with-inheritance/graph.sql:3: NOTICE:  graph "lsqb" has been created
+psql:with-inheritance/graph.sql:5: NOTICE:  VLabel "Company" has been created
+psql:with-inheritance/graph.sql:6: NOTICE:  VLabel "University" has been created
+psql:with-inheritance/graph.sql:7: NOTICE:  VLabel "Continent" has been created
+psql:with-inheritance/graph.sql:8: NOTICE:  VLabel "Post" has been created
+psql:with-inheritance/graph.sql:9: NOTICE:  VLabel "Comment" has been created
+psql:with-inheritance/graph.sql:10: NOTICE:  VLabel "Message" has been created
+psql:with-inheritance/graph.sql:11: NOTICE:  VLabel "Country" has been created
+psql:with-inheritance/graph.sql:12: NOTICE:  VLabel "City" has been created
+psql:with-inheritance/graph.sql:13: NOTICE:  VLabel "Tag" has been created
+psql:with-inheritance/graph.sql:14: NOTICE:  VLabel "TagClass" has been created
+psql:with-inheritance/graph.sql:15: NOTICE:  VLabel "Forum" has been created
+psql:with-inheritance/graph.sql:16: NOTICE:  VLabel "Person" has been created
+psql:with-inheritance/graph.sql:21: NOTICE:  ELabel "HAS_MEMBER" has been created
+psql:with-inheritance/graph.sql:22: NOTICE:  ELabel "HAS_INTEREST" has been created
+psql:with-inheritance/graph.sql:23: NOTICE:  ELabel "LIKES" has been created
+psql:with-inheritance/graph.sql:24: NOTICE:  ELabel "KNOWS" has been created
+psql:with-inheritance/graph.sql:25: NOTICE:  ELabel "REPLY_OF" has been created
+psql:with-inheritance/graph.sql:26: NOTICE:  ELabel "HAS_TAG" has been created
+psql:with-inheritance/graph.sql:27: NOTICE:  ELabel "IS_PART_OF" has been created
+psql:with-inheritance/graph.sql:28: NOTICE:  ELabel "HAS_TYPE" has been created
+psql:with-inheritance/graph.sql:29: NOTICE:  ELabel "HAS_CREATOR" has been created
+psql:with-inheritance/graph.sql:30: NOTICE:  ELabel "IS_LOCATED_IN" has been created
+psql:with-inheritance/graph.sql:31: NOTICE:  ELabel "CONTAINER_OF" has been created
+Time load data,3240.324
+Before  pg_size_pretty 
+----------------
+ 8454 kB
+(1 row)
+After  pg_size_pretty 
+----------------
+ 77 GB
+(1 row)
+2026-10-08 08:09:32.809,q1.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 08:59:42.653,q2.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 09:49:42.755,q3.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 09:59:34.177,q4.sql,[('654535635',)],117.504539,118.271259,298324,[123.015713;117.786181;115.748634;117.301227;117.504539]
+2026-10-08 10:07:21.097,q5.sql,[('432745907',)],92.070223,93.374884,219668,[94.371667;91.697699;92.070223;91.361204;97.373627]
+2026-10-08 10:57:21.180,q6.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 11:08:54.769,q7.sql,[('1031548495',)],138.732630,138.709036,284476,[137.908015;139.542128;138.948279;138.414128;138.732630]
+2026-10-08 11:59:00.629,q8.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+2026-10-08 12:49:00.710,q9.sql,None,,,0.0,[timeout;timeout;timeout;timeout;timeout]
+failure_rate,66.667%

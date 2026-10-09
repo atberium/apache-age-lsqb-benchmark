@@ -1,0 +1,121 @@
+-- q1.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q1.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Finalize Aggregate  (cost=93061.95..93061.96 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Gather  (cost=93061.73..93061.94 rows=2 width=8)
+        Output: (PARTIAL count(*))
+        Workers Planned: 2
+        Single Copy: false
+        ->  Partial Aggregate  (cost=92061.73..92061.74 rows=1 width=8)
+              Output: PARTIAL count(*)
+              ->  Hash Join  (cost=87538.67..92061.72 rows=6 width=0)
+                    Inner Unique: false
+                    Hash Cond: ((_age_default_alias_1.start_id = _age_default_alias_3.end_id) AND (_age_default_alias_4.id = _age_default_alias_3.start_id))
+                    Join Filter: _ag_enforce_edge_uniqueness(_age_default_alias_1.id, _age_default_alias_3.id, _age_default_alias_5.id, _age_default_alias_7.id, _age_default_alias_9.id, _age_default_alias_11.id, _age_default_alias_13.id)
+                    ->  Hash Join  (cost=87135.67..91472.42 rows=24810 width=80)
+                          Output: _age_default_alias_4.id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_7.id, _age_default_alias_11.id, _age_default_alias_13.id, _age_default_alias_5.end_id, _age_default_alias_5.id
+                          Inner Unique: true
+                          Hash Cond: (_age_default_alias_5.end_id = _age_default_alias_4.id)
+                          ->  Nested Loop  (cost=86730.17..91001.77 rows=24810 width=72)
+                                Output: _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_7.id, _age_default_alias_11.id, _age_default_alias_13.id, _age_default_alias_5.end_id, _age_default_alias_5.id
+                                Inner Unique: false
+                                Join Filter: (_age_default_alias_5.start_id = _age_default_alias_6.id)
+                                ->  Nested Loop  (cost=86729.74..88690.92 rows=832 width=72)
+                                      Output: _age_default_alias_6.id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_7.start_id, _age_default_alias_7.id, _age_default_alias_11.id, _age_default_alias_13.id
+                                      Inner Unique: true
+                                      ->  Nested Loop  (cost=86729.59..88660.20 rows=832 width=80)
+                                            Output: _age_default_alias_6.id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_7.start_id, _age_default_alias_7.id, _age_default_alias_11.id, _age_default_alias_13.end_id, _age_default_alias_13.id
+                                            Inner Unique: false
+                                            ->  Nested Loop  (cost=86729.31..88400.06 rows=832 width=80)
+                                                  Output: _age_default_alias_12.id, _age_default_alias_6.id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_7.start_id, _age_default_alias_7.id, _age_default_alias_11.end_id, _age_default_alias_11.id
+                                                  Inner Unique: true
+                                                  ->  Nested Loop  (cost=86729.02..88148.34 rows=832 width=72)
+                                                        Output: _age_default_alias_6.id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_7.start_id, _age_default_alias_7.id, _age_default_alias_11.end_id, _age_default_alias_11.id
+                                                        Inner Unique: false
+                                                        ->  Nested Loop  (cost=86728.59..87803.31 rows=542 width=72)
+                                                              Output: _age_default_alias_6.id, _age_default_alias_10.id, _age_default_alias_9.start_id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_7.start_id, _age_default_alias_7.id
+                                                              Inner Unique: true
+                                                              ->  Nested Loop  (cost=86728.17..87566.62 rows=542 width=64)
+                                                                    Output: _age_default_alias_10.id, _age_default_alias_9.start_id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id, _age_default_alias_7.start_id, _age_default_alias_7.id
+                                                                    Inner Unique: false
+                                                                    Join Filter: (_age_default_alias_7.end_id = _age_default_alias_8.id)
+                                                                    ->  Merge Join  (cost=86727.75..86759.65 rows=1679 width=64)
+                                                                          Output: _age_default_alias_8.id, _age_default_alias_10.id, _age_default_alias_9.end_id, _age_default_alias_9.start_id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.id
+                                                                          Inner Unique: true
+                                                                          Merge Cond: (_age_default_alias_1.start_id = _age_default_alias_2.id)
+                                                                          ->  Sort  (cost=86627.54..86631.74 rows=1679 width=56)
+                                                                                Output: _age_default_alias_8.id, _age_default_alias_10.id, _age_default_alias_9.end_id, _age_default_alias_9.start_id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                                                                Sort Key: _age_default_alias_1.start_id
+                                                                                ->  Nested Loop  (cost=1.01..86537.60 rows=1679 width=56)
+                                                                                      Output: _age_default_alias_8.id, _age_default_alias_10.id, _age_default_alias_9.end_id, _age_default_alias_9.start_id, _age_default_alias_9.id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                                                                      Inner Unique: true
+                                                                                      ->  Nested Loop  (cost=0.86..86476.64 rows=1679 width=64)
+                                                                                            Output: _age_default_alias_8.id, _age_default_alias_10.id, _age_default_alias_9.end_id, _age_default_alias_9.start_id, _age_default_alias_9.id, _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                                                                            Inner Unique: false
+                                                                                            ->  Nested Loop  (cost=0.86..86433.78 rows=1 width=40)
+                                                                                                  Output: _age_default_alias_8.id, _age_default_alias_10.id, _age_default_alias_9.end_id, _age_default_alias_9.start_id, _age_default_alias_9.id
+                                                                                                  Inner Unique: true
+                                                                                                  ->  Nested Loop  (cost=0.43..85832.49 rows=1075 width=32)
+                                                                                                        Output: _age_default_alias_10.id, _age_default_alias_9.end_id, _age_default_alias_9.start_id, _age_default_alias_9.id
+                                                                                                        Inner Unique: false
+                                                                                                        ->  Parallel Seq Scan on lsqb."Message" _age_default_alias_10  (cost=0.00..74055.35 rows=1587 width=8)
+                                                                                                              Output: _age_default_alias_10.id, _age_default_alias_10.properties
+                                                                                                              Filter: (_age_default_alias_10.properties @> '{"type": "Comment"}'::agtype)
+                                                                                                        ->  Index Scan using "REPLY_OF_start_id_idx" on lsqb."REPLY_OF" _age_default_alias_9  (cost=0.43..7.41 rows=1 width=24)
+                                                                                                              Output: _age_default_alias_9.id, _age_default_alias_9.start_id, _age_default_alias_9.end_id, _age_default_alias_9.properties
+                                                                                                              Index Cond: (_age_default_alias_9.start_id = _age_default_alias_10.id)
+                                                                                                  ->  Index Scan using "Message_pkey" on lsqb."Message" _age_default_alias_8  (cost=0.43..0.56 rows=1 width=8)
+                                                                                                        Output: _age_default_alias_8.id, _age_default_alias_8.properties
+                                                                                                        Index Cond: (_age_default_alias_8.id = _age_default_alias_9.end_id)
+                                                                                                        Filter: (_age_default_alias_8.properties @> '{"type": "Post"}'::agtype)
+                                                                                            ->  Seq Scan on lsqb."IS_PART_OF" _age_default_alias_1  (cost=0.00..29.43 rows=1343 width=24)
+                                                                                                  Output: _age_default_alias_1.id, _age_default_alias_1.start_id, _age_default_alias_1.end_id, _age_default_alias_1.properties
+                                                                                      ->  Memoize  (cost=0.15..0.18 rows=1 width=8)
+                                                                                            Output: _age_default_alias_0.id
+                                                                                            Cache Key: _age_default_alias_1.end_id
+                                                                                            Cache Mode: logical
+                                                                                            Estimates: capacity=111 distinct keys=111 lookups=1679 hit percent=93.39%
+                                                                                            ->  Index Only Scan using "Country_pkey" on lsqb."Country" _age_default_alias_0  (cost=0.14..0.17 rows=1 width=8)
+                                                                                                  Output: _age_default_alias_0.id
+                                                                                                  Index Cond: (_age_default_alias_0.id = _age_default_alias_1.end_id)
+                                                                          ->  Sort  (cost=100.21..103.56 rows=1343 width=8)
+                                                                                Output: _age_default_alias_2.id
+                                                                                Sort Key: _age_default_alias_2.id
+                                                                                ->  Seq Scan on lsqb."City" _age_default_alias_2  (cost=0.00..30.43 rows=1343 width=8)
+                                                                                      Output: _age_default_alias_2.id
+                                                                    ->  Index Scan using "CONTAINER_OF_end_id_idx" on lsqb."CONTAINER_OF" _age_default_alias_7  (cost=0.43..0.47 rows=1 width=24)
+                                                                          Output: _age_default_alias_7.id, _age_default_alias_7.start_id, _age_default_alias_7.end_id, _age_default_alias_7.properties
+                                                                          Index Cond: (_age_default_alias_7.end_id = _age_default_alias_9.end_id)
+                                                              ->  Index Only Scan using "Forum_pkey" on lsqb."Forum" _age_default_alias_6  (cost=0.42..0.44 rows=1 width=8)
+                                                                    Output: _age_default_alias_6.id
+                                                                    Index Cond: (_age_default_alias_6.id = _age_default_alias_7.start_id)
+                                                        ->  Index Scan using "HAS_TAG_start_id_idx" on lsqb."HAS_TAG" _age_default_alias_11  (cost=0.43..0.59 rows=5 width=24)
+                                                              Output: _age_default_alias_11.id, _age_default_alias_11.start_id, _age_default_alias_11.end_id, _age_default_alias_11.properties
+                                                              Index Cond: (_age_default_alias_11.start_id = _age_default_alias_9.start_id)
+                                                  ->  Index Only Scan using "Tag_pkey" on lsqb."Tag" _age_default_alias_12  (cost=0.29..0.30 rows=1 width=8)
+                                                        Output: _age_default_alias_12.id
+                                                        Index Cond: (_age_default_alias_12.id = _age_default_alias_11.end_id)
+                                            ->  Index Scan using "HAS_TYPE_start_id_idx" on lsqb."HAS_TYPE" _age_default_alias_13  (cost=0.29..0.30 rows=1 width=24)
+                                                  Output: _age_default_alias_13.id, _age_default_alias_13.start_id, _age_default_alias_13.end_id, _age_default_alias_13.properties
+                                                  Index Cond: (_age_default_alias_13.start_id = _age_default_alias_11.end_id)
+                                      ->  Memoize  (cost=0.15..0.17 rows=1 width=8)
+                                            Output: _age_default_alias_14.id
+                                            Cache Key: _age_default_alias_13.end_id
+                                            Cache Mode: logical
+                                            Estimates: capacity=62 distinct keys=62 lookups=832 hit percent=92.55%
+                                            ->  Index Only Scan using "TagClass_pkey" on lsqb."TagClass" _age_default_alias_14  (cost=0.14..0.16 rows=1 width=8)
+                                                  Output: _age_default_alias_14.id
+                                                  Index Cond: (_age_default_alias_14.id = _age_default_alias_13.end_id)
+                                ->  Index Scan using "HAS_MEMBER_start_id_idx" on lsqb."HAS_MEMBER" _age_default_alias_5  (cost=0.43..1.85 rows=74 width=24)
+                                      Output: _age_default_alias_5.id, _age_default_alias_5.start_id, _age_default_alias_5.end_id, _age_default_alias_5.properties
+                                      Index Cond: (_age_default_alias_5.start_id = _age_default_alias_7.start_id)
+                          ->  Hash  (cost=268.00..268.00 rows=11000 width=8)
+                                Output: _age_default_alias_4.id
+                                ->  Seq Scan on lsqb."Person" _age_default_alias_4  (cost=0.00..268.00 rows=11000 width=8)
+                                      Output: _age_default_alias_4.id
+                    ->  Hash  (cost=238.00..238.00 rows=11000 width=24)
+                          Output: _age_default_alias_3.end_id, _age_default_alias_3.start_id, _age_default_alias_3.id
+                          ->  Seq Scan on lsqb."IS_LOCATED_IN" _age_default_alias_3  (cost=0.00..238.00 rows=11000 width=24)
+                                Output: _age_default_alias_3.end_id, _age_default_alias_3.start_id, _age_default_alias_3.id
+Settings: search_path = 'ag_catalog,$user,public'

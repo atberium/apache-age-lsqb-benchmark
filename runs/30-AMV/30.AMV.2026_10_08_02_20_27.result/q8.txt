@@ -1,0 +1,61 @@
+-- q8.sql: estimate-only plan, EXPLAIN (VERBOSE, COSTS, SETTINGS)
+-- rendered in PostgreSQL's text layout from q8.json; all plan fields kept except defaults PostgreSQL omits in text
+
+Aggregate  (cost=461280275.57..461280275.58 rows=1 width=32)
+  Output: (count(*))::agtype
+  ->  Hash Join  (cost=35447878.48..432253911.38 rows=11610545676 width=0)
+        Inner Unique: true
+        Hash Cond: (_age_default_alias_1.start_id = comment.id)
+        Join Filter: (NOT (EXISTS(SubPlan exists_1))::agtype)
+        ->  Hash Join  (cost=32459782.00..56774668.57 rows=25941595234 width=24)
+              Output: tag1.id, _age_default_alias_1.start_id, _age_default_alias_2.start_id
+              Inner Unique: false
+              Hash Cond: (_age_default_alias_0.start_id = message.id)
+              Join Filter: ((tag1.id <> tag2.id) AND _ag_enforce_edge_uniqueness3(_age_default_alias_0.id, _age_default_alias_1.id, _age_default_alias_2.id))
+              ->  Hash Join  (cost=534.80..4875485.87 rows=244005248 width=24)
+                    Output: tag1.id, _age_default_alias_0.start_id, _age_default_alias_0.id
+                    Inner Unique: true
+                    Hash Cond: (_age_default_alias_0.end_id = tag1.id)
+                    ->  Seq Scan on lsqb."HAS_TAG" _age_default_alias_0  (cost=0.00..4234268.48 rows=244005248 width=24)
+                          Output: _age_default_alias_0.id, _age_default_alias_0.start_id, _age_default_alias_0.end_id, _age_default_alias_0.properties
+                    ->  Hash  (cost=333.80..333.80 rows=16080 width=8)
+                          Output: tag1.id
+                          ->  Seq Scan on lsqb."Tag" tag1  (cost=0.00..333.80 rows=16080 width=8)
+                                Output: tag1.id
+              ->  Hash  (cost=25164575.39..25164575.39 rows=327620305 width=56)
+                    Output: message.id, _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.start_id, _age_default_alias_2.id, tag2.id
+                    ->  Hash Join  (cost=12184805.59..25164575.39 rows=327620305 width=56)
+                          Output: message.id, _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id, _age_default_alias_2.start_id, _age_default_alias_2.id, tag2.id
+                          Inner Unique: false
+                          Hash Cond: (_age_default_alias_2.start_id = _age_default_alias_1.start_id)
+                          ->  Hash Join  (cost=534.80..4875485.87 rows=244005248 width=24)
+                                Output: _age_default_alias_2.start_id, _age_default_alias_2.id, tag2.id
+                                Inner Unique: true
+                                Hash Cond: (_age_default_alias_2.end_id = tag2.id)
+                                ->  Seq Scan on lsqb."HAS_TAG" _age_default_alias_2  (cost=0.00..4234268.48 rows=244005248 width=24)
+                                      Output: _age_default_alias_2.id, _age_default_alias_2.start_id, _age_default_alias_2.end_id, _age_default_alias_2.properties
+                                ->  Hash  (cost=333.80..333.80 rows=16080 width=8)
+                                      Output: tag2.id
+                                      ->  Seq Scan on lsqb."Tag" tag2  (cost=0.00..333.80 rows=16080 width=8)
+                                            Output: tag2.id
+                          ->  Hash  (cost=9202510.19..9202510.19 rows=154208208 width=32)
+                                Output: message.id, _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                ->  Hash Join  (cost=3919306.54..9202510.19 rows=154208208 width=32)
+                                      Output: message.id, _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                      Inner Unique: true
+                                      Hash Cond: (_age_default_alias_1.end_id = message.id)
+                                      ->  Seq Scan on lsqb."REPLY_OF" _age_default_alias_1  (cost=0.00..2676202.08 rows=154208208 width=24)
+                                            Output: _age_default_alias_1.end_id, _age_default_alias_1.start_id, _age_default_alias_1.id
+                                      ->  Hash  (cost=2259984.24..2259984.24 rows=101139624 width=8)
+                                            Output: message.id
+                                            ->  Seq Scan on lsqb."Message" message  (cost=0.00..2259984.24 rows=101139624 width=8)
+                                                  Output: message.id
+        ->  Hash  (cost=1723090.88..1723090.88 rows=77105088 width=8)
+              Output: comment.id
+              ->  Seq Scan on lsqb."Comment" comment  (cost=0.00..1723090.88 rows=77105088 width=8)
+                    Output: comment.id
+        SubPlan exists_1
+          ->  Index Scan using "HAS_TAG_start_id_idx" on lsqb."HAS_TAG" _age_default_alias_3  (cost=0.57..597.31 rows=1 width=0)
+                Index Cond: (_age_default_alias_3.start_id = comment.id)
+                Filter: (_age_default_alias_3.end_id = tag1.id)
+Settings: search_path = 'ag_catalog,$user,public'

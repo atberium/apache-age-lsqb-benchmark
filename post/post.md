@@ -51,7 +51,8 @@ Schemas: [TP and TP+GIN](https://github.com/atberium/apache-age-lsqb-benchmark/b
 ![AGE-IH against SQL/PGQ: star queries at SF 30, long chain and negation at SF 1](charts/summary.png)
 
 Each configuration was loaded once and each query run five times; the medians show one plan per
-configuration, not variation between independent loads.
+configuration, not variation between independent loads. What the SQL/PGQ comparisons can and cannot show
+is discussed under Comparison with SQL/PGQ.
 
 ### Comparing the representations
 
@@ -60,6 +61,8 @@ configuration, not variation between independent loads.
 ![Q5: median time by scale factor](charts/q5_by_scale.png)
 
 ![Q7: median time by scale factor](charts/q7_by_scale.png)
+
+The three charts also show SQL/PGQ-PT and reference SQL for scale; the comparison itself follows below.
 
 **SF 1**, median seconds:
 
@@ -83,11 +86,11 @@ configuration, not variation between independent loads.
 — means every repetition timed out; ratios compare point estimates, not statistical significance.
 
 - **IH wins the star queries** at every size, by 1.08–2.17× over the next representation from SF 1 up, at
-  about the disk cost of TP (77 GB against 76 GB at SF 30).
-- **AMV pays for its copies**: 134 GB at SF 30, 1.7× IH's load time, and Q2 2.8–3.9× slower than on IH. It is
+  about the disk cost of TP (77 GiB against 76 GiB at SF 30).
+- **AMV pays for its copies**: 134 GiB at SF 30, 1.7× IH's load time, and Q2 2.7–3.9× slower than on IH. It is
   the only representation that carries Q8 past SF 0.3, to SF 10.
 - **The GIN index does not rescue TP.** It is used in every plan that filters on `type`, yet apart from one
-  clear gain — Q5 at SF 1, 1.6× faster — TP+GIN is at most 14 % faster than TP and up to 2.2× slower (SF 0.1);
+  clear gain — Q5 at SF 1, 1.6× faster — TP+GIN is at most 1.17× faster than TP and up to 2.2× slower (SF 0.1);
   on the star queries at SF 30 it is 1.06–1.08× slower. At SF 30 it adds 18 % to the database and 26 % to
   the load time.
 
@@ -108,7 +111,7 @@ one table per label with `graphid` keys, `agtype` properties and `start_id`/`end
 typed tables with `bigint` primary keys and no secondary indexes. From SF 0.3 up AGE-IH is level or faster on
 the star queries — at SF 30 1.2× faster on Q4, 1.4× on Q5, level on Q7. Q1 is 11–28× slower, and Q8 stops at
 SF 0.3 while SQL/PGQ reaches SF 30; at the two smallest sizes AGE completes Q2 and Q3, where SQL/PGQ times
-out. Storage is the same, 77 GB at SF 30; AGE-IH loads 1.2–2.0× slower.
+out. Storage is the same, 77 GiB at SF 30; AGE-IH loads 1.2–2.0× slower.
 
 **Best against best — the fastest AGE representation against SQL/PGQ-best**, per cell. The star-query gap
 narrows: at SF 30 AGE is 1.1× faster on Q4, level on Q5 and 1.2× slower on Q7, so much of IH's lead above
@@ -121,13 +124,13 @@ about 6× the SQL/PGQ time.
 ## What the execution plans tell us
 
 Plans were captured with `EXPLAIN` without `ANALYZE`, so they show estimates, not actual row counts; each
-link points at the lines in the captured plan.
+link points at the lines in the text rendering of the captured plan.
 
 ### TP misjudges its own type filter
 
 `{type: 'Comment'}` becomes `properties @> '{"type": "Comment"}'`, and at SF 30 the planner expects about
 100 thousand matching rows — exactly 0.1 % of 101 million messages — where the data holds about 77 million
-comments ([plan](https://github.com/atberium/apache-age-lsqb-benchmark/blob/776011f41447e875c6c7d097eaf9166f05757ea2/runs/30-TP/30.TP.2026_10_08_02_17_20.result/q5.txt#L43-L45)). Every join above that scan is planned for a relation about 750 times
+comments ([plan](https://github.com/atberium/apache-age-lsqb-benchmark/blob/776011f41447e875c6c7d097eaf9166f05757ea2/runs/30-TP/30.TP.2026_10_08_02_17_20.result/q5.txt#L43-L45)). Every join above that scan is planned for a relation about 760 times
 smaller than the real one. The GIN index changes the access path, not the estimate: 101 134 rows
 ([plan](https://github.com/atberium/apache-age-lsqb-benchmark/blob/776011f41447e875c6c7d097eaf9166f05757ea2/runs/30-TP-with-index/30.TP.with-index.2026_10_09_00_07_07.result/q5.txt#L43-L47)).
 
@@ -189,7 +192,7 @@ though cache effects are not isolated. SF sizes are row-count estimates after `A
 | AGE | 1.8.0, development snapshot from branch `PG19` at [`15a1f0d`](https://github.com/apache/age/commit/15a1f0d7f9d24ce9766b5430683d2d4d88c4a1a3)¹ |
 | Server | `19~beta1-1.pgdg13+1`, packaged defaults: `shared_buffers` 128 MB, `work_mem` 4 MB, `effective_cache_size` 4 GB, 2 workers per gather (8 in all), `jit` off, `random_page_cost` 4, autovacuum on |
 | Load | `graph.sql` via `psql`, `load_labels_from_file` / `load_edges_from_file`; load time is the wall-clock time of that call |
-| Size | `pg_database_size` after loading, all objects included, binary units |
+| Size | `pg_database_size` after loading, all objects included, in GiB |
 
 ¹ Inferred, since the image has no source revision label: it was pushed after 20 August 2026, and `15a1f0d`,
 the head of `PG19`, only fixed the Docker Hub build; the extension source is that of
